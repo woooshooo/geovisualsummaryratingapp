@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = this.getAssets().open("coordinates.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
-//            inputStream.read(buffer);
+            inputStream.read(buffer);
             inputStream.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = this.getAssets().open("data.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
-//            inputStream.read(buffer);
+            inputStream.read(buffer);
             inputStream.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
