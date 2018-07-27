@@ -20,6 +20,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == "com.android.support") {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion "26.+"
+                }
+            }
+        }
+    }
 
 }
 
@@ -31,5 +41,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //MapBox
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.2.1'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.3.0'
+    //Data Driven
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:6.3.0@aar') {
+        transitive = true
+    }
+    //Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

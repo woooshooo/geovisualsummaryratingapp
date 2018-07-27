@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns="http://schemas.android.com/apk/res-auto"
     android:id="@+id/customInfobox"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,79 +14,25 @@
         android:text="Location" />
 
     <TextView
-        android:id="@+id/tvReviewCount"
+        android:id="@+id/tvAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Review Count" />
+        android:text="Address" />
 
     <TextView
-        android:id="@+id/tvScore"
+        android:id="@+id/tvWebsite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Subjectivity Score" />
+        android:text="Website" />
 
     <TextView
-        android:id="@+id/tvPositive"
+        android:id="@+id/tvContact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Positive Reviews" />
+        android:text="Contact No." />
 
-    <TextView
-        android:id="@+id/tvPositiveGT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Positive Reviews GT" />
 
-    <TextView
-        android:id="@+id/tvPositiveLT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Positive Reviews LT" />
-
-    <TextView
-        android:id="@+id/tvNegative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Negative Reviews" />
-
-    <TextView
-        android:id="@+id/tvNegativeGT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Negative Reviews GT" />
-
-    <TextView
-        android:id="@+id/tvNegativeLT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Negative Reviews LT" />
-
-    <TextView
-        android:id="@+id/tvNeutral"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Positive Reviews" />
-
-    <TextView
-        android:id="@+id/tvNeutralGT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Positive Reviews GT" />
-
-    <TextView
-        android:id="@+id/tvNeutralLT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Positive Reviews LT" />
 </LinearLayout>

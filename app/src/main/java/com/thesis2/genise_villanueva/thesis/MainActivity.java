@@ -1,17 +1,24 @@
 package com.thesis2.genise_villanueva.thesis;
 
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -26,17 +33,44 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private MapView mapView;
+    private PieChart pieChart;
+    private List<String> arrayString = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
+        Mapbox.getInstance(this, String.valueOf("pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw"));
         setContentView(R.layout.activity_main);
+        ScrollView scrollView = findViewById(R.id.scrollViewLayout);
+        pieChart = findViewById(R.id.pieChart);
+        pieChart.setTransparentCircleRadius(10);
+        Description description = new Description();
+
+        pieChart.setUsePercentValues(true);
+        pieChart.setCenterText("Percentage of Polarity");
+        pieChart.setContentDescription("");
+        pieChart.setCenterTextSize(14);
+        pieChart.setDrawCenterText(true);
+        pieChart.setTransparentCircleRadius(50);
+        pieChart.setCenterTextColor(Color.LTGRAY);
+        pieChart.setEntryLabelColor(Color.LTGRAY);
+        pieChart.setHoleColor(Color.TRANSPARENT);
+        pieChart.setMinimumWidth(500);
+        pieChart.setMinimumHeight(500);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleRadius(70);
+        pieChart.setRotationAngle(0);
+        pieChart.setRotationEnabled(true);
+        pieChart.animateXY(2000,2000, Easing.EasingOption.EaseInBack, Easing.EasingOption.EaseOutBack);
         mapView = findViewById(R.id.mapView);
         TextView tvLocation = findViewById(R.id.tvLocation);
         TextView tvReviewCount = findViewById(R.id.tvReviewCount);
@@ -50,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tvNeutral = findViewById(R.id.tvNeutral);
         TextView tvNeutralGT = findViewById(R.id.tvNeutralGT);
         TextView tvNeutralLT = findViewById(R.id.tvNeutralLT);
-
+        putEntryinList();
         mapView.onCreate(savedInstanceState);
 
         if (Mapbox.isConnected()) {
@@ -60,22 +94,50 @@ public class MainActivity extends AppCompatActivity {
                 public void onMapReady(MapboxMap mapboxMap) {
                     mapboxMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
                     // Customize map with markers, polylines, etc.
+                    // Create an Icon object for the marker to use
+                    IconFactory iconFactory = IconFactory.getInstance(MainActivity.this);
+                    Icon icon = iconFactory.fromResource(R.mipmap.green_pin_marker);
+
                     //Adding Markers
                     try {
                         JSONArray jsonArray;
-                        JSONObject jsonObject = null;
+                        JSONObject jsonObject;
+                        JSONArray jsonArrayData;
+                        JSONObject jsonObjectData;
                         jsonArray = new JSONArray(loadCoordinatesFromAsset());
                         jsonObject = new JSONObject();
+                        jsonArrayData = new JSONArray(loadDataFromAsset());
+                        jsonObjectData = new JSONObject();
+                        MarkerOptions markerOptions = new MarkerOptions();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject = jsonArray.getJSONObject(i);
+                            jsonObjectData = jsonArrayData.getJSONObject(i);
                             String loc = jsonObject.getString("Location");
+                            String location = jsonObjectData.getString("Name");
+                            if (loc.equals(location)){
+                                Timber.d("loc is equal to location");
+                                int positive = jsonObjectData.getInt("Positive");
+                                int negative = jsonObjectData.getInt("Negative");
+                                if (positive > negative) {
+                                    markerOptions.icon(icon);
+                                }
+
+
+
+                            } else {
+                                Timber.e("loc IS NOT equal to location");
+                            }
+                            markerOptions.title(loc);
                             double lat = jsonObject.getDouble("Lat");
                             double lng = jsonObject.getDouble("Lng");
                             LatLng newLatLng = new LatLng(lat, lng);
-                            mapboxMap.addMarker(new MarkerOptions()
-                                    .position(newLatLng)
-                                    .title(loc)
-                                    .snippet("Lat:" + lat + "\nLng:" + lng));
+                            markerOptions.position(newLatLng);
+                            mapboxMap.addMarker(markerOptions);
+//                            mapboxMap.addMarker(new MarkerOptions()
+//                                    .position(newLatLng)
+//                                    .title(loc)
+//                                    .snippet("Lat:" + lat + "\nLng:" + lng));
+
                         }
                         LatLng center = new LatLng(7.0910885, 125.6112563);
                         mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
@@ -83,13 +145,16 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
                             mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 500);
 
+                            List<PieEntry> entries = new ArrayList<>();
+
                             JSONArray jsonArrayData;
-                            JSONObject jsonObjectData = null;
+                            JSONObject jsonObjectData;
                             try {
                                 jsonArrayData = new JSONArray(loadDataFromAsset());
                                 jsonObjectData = new JSONObject();
@@ -108,7 +173,12 @@ public class MainActivity extends AppCompatActivity {
                                     int neutralGTAvg = jsonObjectData.getInt("NeutralGTAvg");
                                     int neutralLTAvg = jsonObjectData.getInt("NeutralLTAvg");
 
+
                                     if (location.equals(marker.getTitle())) {
+                                        entries.add(new PieEntry(positive, "Positive"));
+                                        entries.add(new PieEntry(neutral, "Neutral"));
+                                        entries.add(new PieEntry(negative,"Negative"));
+                                        description.setText(location);
                                         tvLocation.setText("Location: " + location);
                                         tvReviewCount.setText("Review Count: " + reviewCount);
                                         tvScore.setText("Average Subjectivity Score: " + subjectivityScore);
@@ -122,7 +192,24 @@ public class MainActivity extends AppCompatActivity {
                                         tvNeutralGT.setText("Neutral Reviews Highly Subjective: " + neutralGTAvg);
                                         tvNeutralLT.setText("Neutral Reviews Highly Objective: " + neutralLTAvg);
                                     }
+                                    PieDataSet dataSet = new PieDataSet(entries,"Reviews");
+                                    PieData data = new PieData(dataSet);
+                                    Highlight h = new Highlight(0, 0,0); // dataset index for piechart is always 0
+                                    pieChart.highlightValues(new Highlight[] { h });
+                                    pieChart.getDescription().setEnabled(false);
+                                    dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                                    dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                                    dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                                    data.setValueTextColor(Color.LTGRAY);
+                                    dataSet.setValueLineColor(Color.LTGRAY);
+                                    dataSet.setValueLinePart1OffsetPercentage(80.f);
+                                    dataSet.setValueLinePart1Length(0.2f);
+                                    dataSet.setValueLinePart2Length(0.4f);
+                                    pieChart.getLegend().setTextColor(Color.LTGRAY);
+                                    pieChart.setData(data);
+                                    pieChart.invalidate();
                                 }
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -130,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             return false;
                         }
                     });
+
                 }
             });
         } else {
@@ -139,12 +227,12 @@ public class MainActivity extends AppCompatActivity {
 
     //Turn Coordinates JSON to String from Assets folder
     public String loadCoordinatesFromAsset() {
-        String json = null;
+        String json;
         try {
             InputStream inputStream = this.getAssets().open("coordinates.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
-            inputStream.read(buffer);
+//            inputStream.read(buffer);
             inputStream.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
@@ -160,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = this.getAssets().open("data.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
-            inputStream.read(buffer);
+//            inputStream.read(buffer);
             inputStream.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
@@ -212,5 +300,22 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
+    private void putEntryinList() {
+        JSONArray jsonArrayforString;
+        JSONObject jsonObjectforString;
+        try {
+            jsonArrayforString = new JSONArray(loadDataFromAsset());
+            jsonObjectforString = new JSONObject();
+            for (int x = 0; x < jsonArrayforString.length(); x++) {
+                jsonObjectforString = jsonArrayforString.getJSONObject(x);
+                String location = jsonObjectforString.getString("Name");
+                arrayString.add(location);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

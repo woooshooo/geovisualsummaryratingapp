@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "Name": "Abreeza",
     "ReviewCount": 137,
     "SubjectivityScoreAverage": 0.4808480808508942,
@@ -15,7 +14,6 @@
     "NeutralLTAvg": 12
   },
   {
-    "id": 2,
     "Name": "Aldevinco Shopping Center",
     "ReviewCount": 86,
     "SubjectivityScoreAverage": 0.4567122359939918,
@@ -30,7 +28,6 @@
     "NeutralLTAvg": 3
   },
   {
-    "id": 3,
     "Name": "Bankerohan Public Market",
     "ReviewCount": 7,
     "SubjectivityScoreAverage": 0.3731859410430839,
@@ -45,7 +42,6 @@
     "NeutralLTAvg": 3
   },
   {
-    "id": 4,
     "Name": "BEMWA Farm",
     "ReviewCount": 18,
     "SubjectivityScoreAverage": 0.537768558601892,
@@ -60,7 +56,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 5,
     "Name": "BlueJaz Water Park",
     "ReviewCount": 60,
     "SubjectivityScoreAverage": 0.5570141211061677,
@@ -75,7 +70,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 6,
     "Name": "Butterfly House Inc",
     "ReviewCount": 34,
     "SubjectivityScoreAverage": 0.5226664536443949,
@@ -90,7 +84,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 7,
     "Name": "Cape of San Agustin",
     "ReviewCount": 3,
     "SubjectivityScoreAverage": 0.46512345679012346,
@@ -105,7 +98,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 8,
     "Name": "Christina Orchids Garden Resort",
     "ReviewCount": 7,
     "SubjectivityScoreAverage": 0.5814285714285715,
@@ -120,7 +112,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 9,
     "Name": "Coral Garden Marine Park",
     "ReviewCount": 15,
     "SubjectivityScoreAverage": 0.4789182817182817,
@@ -135,7 +126,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 10,
     "Name": "Crocodile Park",
     "ReviewCount": 504,
     "SubjectivityScoreAverage": 0.48904019800735904,
@@ -150,22 +140,6 @@
     "NeutralLTAvg": 47
   },
   {
-    "id": 11,
-    "Name": "D'Bone Collector",
-    "ReviewCount": 188,
-    "SubjectivityScoreAverage": 0.4901998969914044,
-    "Positive": 162,
-    "PositiveGTAvg": 98,
-    "PositiveLTAvg": 64,
-    "Negative": 8,
-    "NegativeGTAvg": 4,
-    "NegativeLTAvg": 4,
-    "Neutral": 18,
-    "NeutralGTAvg": 1,
-    "NeutralLTAvg": 17
-  },
-  {
-    "id": 12,
     "Name": "Davao Museum of History and Ethnography",
     "ReviewCount": 57,
     "SubjectivityScoreAverage": 0.4893853437011333,
@@ -180,22 +154,21 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 13,
-    "Name": "Zorb Park",
-    "ReviewCount": 33,
-    "SubjectivityScoreAverage": 0.46994975093649344,
-    "Positive": 27,
-    "PositiveGTAvg": 15,
-    "PositiveLTAvg": 12,
-    "Negative": 5,
-    "NegativeGTAvg": 2,
-    "NegativeLTAvg": 3,
-    "Neutral": 1,
-    "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "Name": "D'Bone Collector",
+    "ReviewCount": 188,
+    "SubjectivityScoreAverage": 0.4901998969914044,
+    "Positive": 162,
+    "PositiveGTAvg": 98,
+    "PositiveLTAvg": 64,
+    "Negative": 8,
+    "NegativeGTAvg": 4,
+    "NegativeLTAvg": 4,
+    "Neutral": 18,
+    "NeutralGTAvg": 1,
+    "NeutralLTAvg": 17
   },
+
   {
-    "id": 14,
     "Name": "Eden Nature Park & Resort",
     "ReviewCount": 896,
     "SubjectivityScoreAverage": 0.530500973310726,
@@ -210,7 +183,6 @@
     "NeutralLTAvg": 67
   },
   {
-    "id": 15,
     "Name": "Felcris Centrale",
     "ReviewCount": 10,
     "SubjectivityScoreAverage": 0.40390639254924965,
@@ -225,7 +197,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 16,
     "Name": "GAP Farm",
     "ReviewCount": 30,
     "SubjectivityScoreAverage": 0.487116804954305,
@@ -240,7 +211,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 17,
     "Name": "Giant Clam Sanctuary",
     "ReviewCount": 53,
     "SubjectivityScoreAverage": 0.6019796247893732,
@@ -255,7 +225,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 18,
     "Name": "GMALL The Peak",
     "ReviewCount": 48,
     "SubjectivityScoreAverage": 0.5592763618381178,
@@ -270,7 +239,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 19,
     "Name": "GMALL",
     "ReviewCount": 57,
     "SubjectivityScoreAverage": 0.5345264032044189,
@@ -285,7 +253,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 20,
     "Name": "Golden Bay Beach Resort and Spa",
     "ReviewCount": 4,
     "SubjectivityScoreAverage": 0.4421371882086168,
@@ -300,7 +267,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 21,
     "Name": "Gumamela Caverock Farm Resort",
     "ReviewCount": 6,
     "SubjectivityScoreAverage": 0.49018995560856027,
@@ -315,7 +281,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 22,
     "Name": "Hagimit Falls",
     "ReviewCount": 180,
     "SubjectivityScoreAverage": 0.5349641583579544,
@@ -330,7 +295,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 23,
     "Name": "Japanese Cave House",
     "ReviewCount": 5,
     "SubjectivityScoreAverage": 0.299,
@@ -345,7 +309,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 24,
     "Name": "Japanese Tunnel",
     "ReviewCount": 137,
     "SubjectivityScoreAverage": 0.4425770981524681,
@@ -360,7 +323,6 @@
     "NeutralLTAvg": 5
   },
   {
-    "id": 25,
     "Name": "Kaputian Beach",
     "ReviewCount": 29,
     "SubjectivityScoreAverage": 0.5087220853858786,
@@ -375,7 +337,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 26,
     "Name": "Lolengs Mountain Spring Resort",
     "ReviewCount": 20,
     "SubjectivityScoreAverage": 0.5146605677308802,
@@ -390,7 +351,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 27,
     "Name": "Lon Hua Temple",
     "ReviewCount": 39,
     "SubjectivityScoreAverage": 0.519074027649631,
@@ -405,7 +365,6 @@
     "NeutralLTAvg": 3
   },
   {
-    "id": 28,
     "Name": "Magsaysay Local Fruit Stands",
     "ReviewCount": 25,
     "SubjectivityScoreAverage": 0.4546407740407741,
@@ -420,7 +379,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 29,
     "Name": "Malagos Garden",
     "ReviewCount": 205,
     "SubjectivityScoreAverage": 0.5399218162984026,
@@ -435,7 +393,6 @@
     "NeutralLTAvg": 8
   },
   {
-    "id": 30,
     "Name": "Matina Town Square",
     "ReviewCount": 135,
     "SubjectivityScoreAverage": 0.48202153057007824,
@@ -450,7 +407,6 @@
     "NeutralLTAvg": 15
   },
   {
-    "id": 31,
     "Name": "Maxima Beach House",
     "ReviewCount": 117,
     "SubjectivityScoreAverage": 0.5432024584101519,
@@ -465,7 +421,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 32,
     "Name": "Monfort Bat Sanctuary",
     "ReviewCount": 129,
     "SubjectivityScoreAverage": 0.5292985060850303,
@@ -480,7 +435,6 @@
     "NeutralLTAvg": 6
   },
   {
-    "id": 33,
     "Name": "Mount Apo",
     "ReviewCount": 30,
     "SubjectivityScoreAverage": 0.5403143922295938,
@@ -495,7 +449,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 34,
     "Name": "Mt Galintan Sleeping Dinosaur",
     "ReviewCount": 7,
     "SubjectivityScoreAverage": 0.5152380952380952,
@@ -510,7 +463,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 35,
     "Name": "Mt Puting Bato",
     "ReviewCount": 6,
     "SubjectivityScoreAverage": 0.3231244130648893,
@@ -525,8 +477,7 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 36,
-    "Name": "Museo Dabawenyo Data",
+    "Name": "Museo Dabawenyo",
     "ReviewCount": 144,
     "SubjectivityScoreAverage": 0.4431516677264379,
     "Positive": 117,
@@ -540,7 +491,6 @@
     "NeutralLTAvg": 16
   },
   {
-    "id": 37,
     "Name": "Osmena Park",
     "ReviewCount": 19,
     "SubjectivityScoreAverage": 0.5031116573484994,
@@ -555,7 +505,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 38,
     "Name": "Panas Falls",
     "ReviewCount": 8,
     "SubjectivityScoreAverage": 0.45094471500721495,
@@ -570,7 +519,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 39,
     "Name": "Paradise Island Park Beach Resort",
     "ReviewCount": 94,
     "SubjectivityScoreAverage": 0.5520746410004206,
@@ -585,7 +533,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 40,
     "Name": "Peoples Park",
     "ReviewCount": 305,
     "SubjectivityScoreAverage": 0.5351409476246712,
@@ -600,7 +547,6 @@
     "NeutralLTAvg": 8
   },
   {
-    "id": 41,
     "Name": "Philippine Eagle Center",
     "ReviewCount": 452,
     "SubjectivityScoreAverage": 0.4727836900918116,
@@ -615,7 +561,6 @@
     "NeutralLTAvg": 55
   },
   {
-    "id": 42,
     "Name": "Redemptorist Church",
     "ReviewCount": 15,
     "SubjectivityScoreAverage": 0.39136640211640206,
@@ -630,7 +575,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 43,
     "Name": "Roxas Avenue Night Market",
     "ReviewCount": 52,
     "SubjectivityScoreAverage": 0.48848558453612245,
@@ -645,7 +589,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 44,
     "Name": "Samal Watersports Center",
     "ReviewCount": 11,
     "SubjectivityScoreAverage": 0.5287181462068177,
@@ -660,7 +603,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 45,
     "Name": "San Pedro Cathedral",
     "ReviewCount": 84,
     "SubjectivityScoreAverage": 0.4251595451978105,
@@ -675,7 +617,6 @@
     "NeutralLTAvg": 8
   },
   {
-    "id": 46,
     "Name": "Seawall",
     "ReviewCount": 27,
     "SubjectivityScoreAverage": 0.5454942890899681,
@@ -690,7 +631,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 47,
     "Name": "Shrine of the Holy Infant Jesus of Prague",
     "ReviewCount": 49,
     "SubjectivityScoreAverage": 0.482167957602542,
@@ -705,7 +645,6 @@
     "NeutralLTAvg": 4
   },
   {
-    "id": 48,
     "Name": "SM City Davao",
     "ReviewCount": 37,
     "SubjectivityScoreAverage": 0.5261150847757992,
@@ -720,7 +659,6 @@
     "NeutralLTAvg": 3
   },
   {
-    "id": 49,
     "Name": "SM Lanang Premiere",
     "ReviewCount": 117,
     "SubjectivityScoreAverage": 0.4693594427042228,
@@ -735,7 +673,6 @@
     "NeutralLTAvg": 12
   },
   {
-    "id": 50,
     "Name": "Sta Ana Shrine",
     "ReviewCount": 17,
     "SubjectivityScoreAverage": 0.5023114630467572,
@@ -750,7 +687,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 51,
     "Name": "Sul Orchids Palma Gil",
     "ReviewCount": 11,
     "SubjectivityScoreAverage": 0.5273400673400673,
@@ -765,7 +701,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 52,
     "Name": "Tagbaobo Falls",
     "ReviewCount": 6,
     "SubjectivityScoreAverage": 0.3824404761904762,
@@ -780,7 +715,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 53,
     "Name": "Talomo Beach Resort",
     "ReviewCount": 5,
     "SubjectivityScoreAverage": 0.5318,
@@ -795,7 +729,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 54,
     "Name": "Tamayong Prayer Mountain",
     "ReviewCount": 38,
     "SubjectivityScoreAverage": 0.5598427455157147,
@@ -810,7 +743,6 @@
     "NeutralLTAvg": 1
   },
   {
-    "id": 55,
     "Name": "Tribu K Mindanawan Cultural Village",
     "ReviewCount": 46,
     "SubjectivityScoreAverage": 0.5322906200080115,
@@ -825,7 +757,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 56,
     "Name": "Vanishing Island",
     "ReviewCount": 42,
     "SubjectivityScoreAverage": 0.5533528911564625,
@@ -840,7 +771,6 @@
     "NeutralLTAvg": 2
   },
   {
-    "id": 57,
     "Name": "Zip City",
     "ReviewCount": 15,
     "SubjectivityScoreAverage": 0.4828957523957525,
@@ -850,6 +780,20 @@
     "Negative": 2,
     "NegativeGTAvg": 0,
     "NegativeLTAvg": 2,
+    "Neutral": 1,
+    "NeutralGTAvg": 0,
+    "NeutralLTAvg": 1
+  },
+  {
+    "Name": "Zorb Park",
+    "ReviewCount": 33,
+    "SubjectivityScoreAverage": 0.46994975093649344,
+    "Positive": 27,
+    "PositiveGTAvg": 15,
+    "PositiveLTAvg": 12,
+    "Negative": 5,
+    "NegativeGTAvg": 2,
+    "NegativeLTAvg": 3,
     "Neutral": 1,
     "NeutralGTAvg": 0,
     "NeutralLTAvg": 1

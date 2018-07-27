@@ -17,10 +17,10 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
     private final View mWindow;
     private Context mContext;
 
-
-    public CustomInfoWindowAdapter(Context context) {
+    CustomInfoWindowAdapter(Context context) {
         this.mWindow = LayoutInflater.from(context).inflate(R.layout.custom_info_window, null);
         this.mContext = context;
+
     }
 
     private void renderWindowText(Marker marker, View view){
@@ -49,22 +49,22 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
                 builder.setTitle(marker.getTitle())
                         .setView(View.inflate(mContext, R.layout.layout_data, null));
                 // 3. Get the AlertDialog from create()
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    });
 
 
         if(!title.equals("")){
             tvTitle.setText(title);
         }
 
-        String snippet = marker.getSnippet();
-        TextView tvSnippet = view.findViewById(R.id.tvSnippet);
-
-        if(!snippet.equals("")){
-            tvSnippet.setText(snippet);
-        }
+//        String snippet = marker.getSnippet();
+//        TextView tvSnippet = view.findViewById(R.id.tvSnippet);
+//
+//        if(!snippet.equals("")){
+//            tvSnippet.setText(snippet);
+//        }
 
     }
 

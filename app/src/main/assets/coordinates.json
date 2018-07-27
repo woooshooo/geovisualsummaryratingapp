@@ -105,11 +105,6 @@
     "Lng": 125.7253312
   },
   {
-    "Location": "Shrine of the Holy Infant Jesus of Prague",
-    "Lat": 7.0560471,
-    "Lng": 125.5772738
-  },
-  {
     "Location": "Japanese Tunnel",
     "Lat": 7.0659312,
     "Lng": 125.5631999
@@ -133,6 +128,11 @@
     "Location": "Lon Hua Temple",
     "Lat": 7.0954141,
     "Lng": 125.6205694
+  },
+  {
+    "Location":"Magsaysay Local Fruit Stands",
+    "Lat": 7.074315,
+    "Lng": 125.625337
   },
   {
     "Location": "Malagos Garden",
@@ -168,6 +168,11 @@
     "Location": "Mt Puting Bato",
     "Lat": 7.0664,
     "Lng": 125.7680
+  },
+  {
+    "Location":"Museo Dabawenyo",
+    "Lat": 7.0630,
+    "Lng": 125.6093
   },
   {
     "Location": "Osmena Park",
@@ -221,8 +226,8 @@
   },
   {
     "Location": "Shrine of the Holy Infant Jesus of Prague",
-    "Lat": 7.0560,
-    "Lng": 125.5773
+    "Lat": 7.0560471,
+    "Lng": 125.5772738
   },
   {
     "Location": "SM City Davao",
