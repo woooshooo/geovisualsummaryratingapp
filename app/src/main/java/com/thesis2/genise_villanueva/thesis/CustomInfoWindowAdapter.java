@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,16 +17,19 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
     private static final String TAG = "CustomInfoWindowAdapter";
     private final View mWindow;
     private Context mContext;
+    private MainActivity mainActivity;
 
     CustomInfoWindowAdapter(Context context) {
         this.mWindow = LayoutInflater.from(context).inflate(R.layout.custom_info_window, null);
         this.mContext = context;
-
     }
 
     private void renderWindowText(Marker marker, View view){
+
         String title = marker.getTitle();
         TextView tvTitle = view.findViewById(R.id.tvTitle);
+        ImageView imageView1 = view.findViewById(R.id.imageView1);
+        ImageView imageView2 = view.findViewById(R.id.imageView2);
         Button btn_review = view.findViewById(R.id.btn_review);
         Button btn_info = view.findViewById(R.id.btn_info);
 
@@ -73,6 +77,7 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         renderWindowText(marker, mWindow);
         return mWindow;
     }
+
 
 
 }

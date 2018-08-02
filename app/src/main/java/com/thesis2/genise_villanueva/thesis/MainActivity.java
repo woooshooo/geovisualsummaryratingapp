@@ -1,6 +1,7 @@
 package com.thesis2.genise_villanueva.thesis;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -8,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -45,18 +45,18 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private MapView mapView;
     private PieChart pieChart;
-    private List<String> arrayString = new ArrayList<>();
+    private FloatingActionButton btn_center;
+    private TextView tvSubjectivity;
+    private ProgressBar subjectivityBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, String.valueOf(R.string.access_token));
         setContentView(R.layout.activity_main);
-        ScrollView scrollView = findViewById(R.id.scrollViewLayout);
         pieChart = findViewById(R.id.pieChart);
         pieChart.setTransparentCircleRadius(10);
         pieChart.setUsePercentValues(true);
-        pieChart.setCenterText("Percentage of Polarity");
         pieChart.setCenterTextSize(14);
         pieChart.setDrawCenterText(true);
         pieChart.setTransparentCircleRadius(50);
@@ -69,12 +69,10 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setHoleRadius(70);
         pieChart.setRotationAngle(0);
         pieChart.setRotationEnabled(true);
-        pieChart.animateXY(2000,2000, Easing.EasingOption.EaseInBack, Easing.EasingOption.EaseOutBack);
         mapView = findViewById(R.id.mapView);
-        FloatingActionButton btn_center = findViewById(R.id.btn_center);
-        TextView tvSubjectivity = findViewById(R.id.tvSubjectivity);
-        ProgressBar subjectivityBar = findViewById(R.id.subjectivityBar);
-        putEntryinList();
+        btn_center = findViewById(R.id.btn_center);
+        tvSubjectivity = findViewById(R.id.tvSubjectivity);
+        subjectivityBar = findViewById(R.id.subjectivityBar);
         mapView.onCreate(savedInstanceState);
 
         if (Mapbox.isConnected()) {
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     Icon icon = iconFactory.fromResource(R.mipmap.green_pin_marker);
 
                     // center button
-
                     btn_center.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -142,8 +139,10 @@ public class MainActivity extends AppCompatActivity {
                     mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
-                            mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 500);
+                            pieChart.animateXY(1000,1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
+//                            mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 500);
 
+                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
                             List<PieEntry> entries = new ArrayList<>();
 
                             JSONArray jsonArrayData;
@@ -172,7 +171,10 @@ public class MainActivity extends AppCompatActivity {
                                         entries.add(new PieEntry(neutral, "Neutral"));
                                         entries.add(new PieEntry(negative,"Negative"));
                                         int subjectivityScoreBar = (int) Math.round(subjectivityScore*100);
-                                        subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                        pieChart.setCenterText(reviewCount +" Reviews");
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                            subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                        }
                                         tvSubjectivity.setText("Subjectivity: "+ subjectivityScoreBar +"%");
                                     }
                                     PieDataSet dataSet = new PieDataSet(entries,"Reviews");
@@ -284,21 +286,6 @@ public class MainActivity extends AppCompatActivity {
         mapView.onSaveInstanceState(outState);
     }
 
-    private void putEntryinList() {
-        JSONArray jsonArrayforString;
-        JSONObject jsonObjectforString;
-        try {
-            jsonArrayforString = new JSONArray(loadDataFromAsset());
-            jsonObjectforString = new JSONObject();
-            for (int x = 0; x < jsonArrayforString.length(); x++) {
-                jsonObjectforString = jsonArrayforString.getJSONObject(x);
-                String location = jsonObjectforString.getString("Name");
-                arrayString.add(location);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }
