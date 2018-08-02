@@ -3,14 +3,16 @@ package com.thesis2.genise_villanueva.thesis;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -48,16 +50,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, String.valueOf("pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw"));
+        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
         setContentView(R.layout.activity_main);
         ScrollView scrollView = findViewById(R.id.scrollViewLayout);
         pieChart = findViewById(R.id.pieChart);
         pieChart.setTransparentCircleRadius(10);
-        Description description = new Description();
-
         pieChart.setUsePercentValues(true);
         pieChart.setCenterText("Percentage of Polarity");
-        pieChart.setContentDescription("");
         pieChart.setCenterTextSize(14);
         pieChart.setDrawCenterText(true);
         pieChart.setTransparentCircleRadius(50);
@@ -72,18 +71,9 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setRotationEnabled(true);
         pieChart.animateXY(2000,2000, Easing.EasingOption.EaseInBack, Easing.EasingOption.EaseOutBack);
         mapView = findViewById(R.id.mapView);
-        TextView tvLocation = findViewById(R.id.tvLocation);
-        TextView tvReviewCount = findViewById(R.id.tvReviewCount);
-        TextView tvScore = findViewById(R.id.tvScore);
-        TextView tvPositive = findViewById(R.id.tvPositive);
-        TextView tvPositiveGT = findViewById(R.id.tvPositiveGT);
-        TextView tvPositiveLT = findViewById(R.id.tvPositiveLT);
-        TextView tvNegative = findViewById(R.id.tvNegative);
-        TextView tvNegativeGT = findViewById(R.id.tvNegativeGT);
-        TextView tvNegativeLT = findViewById(R.id.tvNegativeLT);
-        TextView tvNeutral = findViewById(R.id.tvNeutral);
-        TextView tvNeutralGT = findViewById(R.id.tvNeutralGT);
-        TextView tvNeutralLT = findViewById(R.id.tvNeutralLT);
+        FloatingActionButton btn_center = findViewById(R.id.btn_center);
+        TextView tvSubjectivity = findViewById(R.id.tvSubjectivity);
+        ProgressBar subjectivityBar = findViewById(R.id.subjectivityBar);
         putEntryinList();
         mapView.onCreate(savedInstanceState);
 
@@ -97,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
                     // Create an Icon object for the marker to use
                     IconFactory iconFactory = IconFactory.getInstance(MainActivity.this);
                     Icon icon = iconFactory.fromResource(R.mipmap.green_pin_marker);
+
+                    // center button
+
+                    btn_center.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            LatLng center = new LatLng(7.0910885, 125.6112563);
+                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
+                        }
+                    });
 
                     //Adding Markers
                     try {
@@ -121,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
                                 if (positive > negative) {
                                     markerOptions.icon(icon);
                                 }
-
-
-
                             } else {
                                 Timber.e("loc IS NOT equal to location");
                             }
@@ -133,10 +130,6 @@ public class MainActivity extends AppCompatActivity {
                             LatLng newLatLng = new LatLng(lat, lng);
                             markerOptions.position(newLatLng);
                             mapboxMap.addMarker(markerOptions);
-//                            mapboxMap.addMarker(new MarkerOptions()
-//                                    .position(newLatLng)
-//                                    .title(loc)
-//                                    .snippet("Lat:" + lat + "\nLng:" + lng));
 
                         }
                         LatLng center = new LatLng(7.0910885, 125.6112563);
@@ -178,19 +171,9 @@ public class MainActivity extends AppCompatActivity {
                                         entries.add(new PieEntry(positive, "Positive"));
                                         entries.add(new PieEntry(neutral, "Neutral"));
                                         entries.add(new PieEntry(negative,"Negative"));
-                                        description.setText(location);
-                                        tvLocation.setText("Location: " + location);
-                                        tvReviewCount.setText("Review Count: " + reviewCount);
-                                        tvScore.setText("Average Subjectivity Score: " + subjectivityScore);
-                                        tvPositive.setText("Positive Reviews: " + positive);
-                                        tvPositiveGT.setText("Positive Reviews Highly Subjective: " + positiveGTAvg);
-                                        tvPositiveLT.setText("Positive Reviews Highly Objective: " + positiveLTAvg);
-                                        tvNegative.setText("Negative Reviews: " + negative);
-                                        tvNegativeGT.setText("Negative Reviews Highly Subjective: " + negativeGTAvg);
-                                        tvNegativeLT.setText("Negative Reviews Highly Objective: " + negativeLTAvg);
-                                        tvNeutral.setText("Neutral Reviews: " + neutral);
-                                        tvNeutralGT.setText("Neutral Reviews Highly Subjective: " + neutralGTAvg);
-                                        tvNeutralLT.setText("Neutral Reviews Highly Objective: " + neutralLTAvg);
+                                        int subjectivityScoreBar = (int) Math.round(subjectivityScore*100);
+                                        subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                        tvSubjectivity.setText("Subjectivity: "+ subjectivityScoreBar +"%");
                                     }
                                     PieDataSet dataSet = new PieDataSet(entries,"Reviews");
                                     PieData data = new PieData(dataSet);
