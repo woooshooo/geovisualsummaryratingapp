@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
                     // Customize map with markers, polylines, etc.
                     // Create an Icon object for the marker to use
                     IconFactory iconFactory = IconFactory.getInstance(MainActivity.this);
-                    Icon icon = iconFactory.fromResource(R.mipmap.green_pin_marker);
+                    Icon darkIcon = iconFactory.fromResource(R.mipmap.green_pin_marker_dark);
+                    Icon normalIcon = iconFactory.fromResource(R.mipmap.green_pin_marker);
+                    Icon lightIcon = iconFactory.fromResource(R.mipmap.green_pin_marker_light);
 
                     // center button
                     btn_center.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +113,26 @@ public class MainActivity extends AppCompatActivity {
                             jsonObjectData = jsonArrayData.getJSONObject(i);
                             String loc = jsonObject.getString("Location");
                             String location = jsonObjectData.getString("Name");
+                            int reviewCount = jsonObjectData.getInt("ReviewCount");
+                            int positive = jsonObjectData.getInt("Positive");
+                            int negative = jsonObjectData.getInt("Negative");
+                            double perc = Math.round((((double) positive)/reviewCount)*100);
                             if (loc.equals(location)){
                                 Timber.d("loc is equal to location");
-                                int positive = jsonObjectData.getInt("Positive");
-                                int negative = jsonObjectData.getInt("Negative");
-                                if (positive > negative) {
-                                    markerOptions.icon(icon);
+                                if (positive > negative){
+                                    Log.d(TAG, "positive > negative");
+                                    markerOptions.icon(lightIcon);
+                                    if (perc > 90){
+                                        markerOptions.icon(darkIcon);
+                                    } else if (perc > 70 &&  perc < 80) {
+                                        markerOptions.icon(normalIcon);
+                                    } else if ( perc > 50 && perc < 71) {
+                                        markerOptions.icon(lightIcon);
+                                    } else {
+                                        Timber.d("perc below 50");
+                                    }
+                                } else {
+                                    Timber.d("negative greater than positive");
                                 }
                             } else {
                                 Timber.e("loc IS NOT equal to location");
@@ -140,9 +156,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
                             pieChart.animateXY(1000,1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
-//                            mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 500);
-
-                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
+                            mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
+//                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
                             List<PieEntry> entries = new ArrayList<>();
 
                             JSONArray jsonArrayData;

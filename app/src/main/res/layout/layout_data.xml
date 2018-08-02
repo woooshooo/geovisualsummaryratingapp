@@ -4,7 +4,8 @@
     android:id="@+id/customInfobox"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="20dp">
 
     <TextView
         android:id="@+id/tvLocation"

@@ -40,7 +40,8 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             app:srcCompat="@android:color/darker_gray"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/imageView2"
@@ -49,7 +50,8 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             app:srcCompat="@android:color/darker_gray"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"/>
     </LinearLayout>
 
     <Button
