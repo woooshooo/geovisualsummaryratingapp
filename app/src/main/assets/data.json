@@ -14,7 +14,8 @@
     "NeutralLTAvg": 12,
     "Address":"J.P. Laurel Ave, Poblacion District, Davao City, 8000 Davao del Sur",
     "Website":"http://www.ayalamalls.com.ph/malls-philippines/abreeza-mall",
-    "Contact":"+6382-321-9332"
+    "Contact":"+6382-321-9332",
+    "Rating": 4.5
   },
   {
     "Name": "Aldevinco Shopping Center",
@@ -28,7 +29,11 @@
     "NegativeLTAvg": 3,
     "Neutral": 4,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 3
+    "NeutralLTAvg": 3,
+    "Address":"Claro M. Recto Ave, Poblacion District, Davao City, 8000 Davao del Sur",
+    "Website":"Not Applicable",
+    "Contact":"(082) 226-4715",
+    "Rating": 3.9
   },
   {
     "Name": "Bankerohan Public Market",
@@ -42,7 +47,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 3,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 3
+    "NeutralLTAvg": 3,
+    "Address":"Building No: 2, Marfori Street, Barangay 5-A, Davao City, 8000 Davao del Sur",
+    "Website":"Not Applicable",
+    "Contact":"0922 949 2270",
+    "Rating": 5.0
   },
   {
     "Name": "BEMWA Farm",
@@ -56,7 +65,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Marilog District, Davao City, Davao del Sur",
+    "Website": "Not Applicable",
+    "Contact": "0923 694 9789",
+    "Rating": 4.0
   },
   {
     "Name": "BlueJaz Water Park",
@@ -70,7 +83,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Purok II Brgy. Caliclic Davao del Norte PH PH, Babak, Island Garden City of Samal, 8119",
+    "Website": "https://www.tripadvisor.com.ph/Attraction_Review-g298459-d1212923-Reviews-BlueJaz_Water_Park-Davao_City_Davao_del_Sur_Province_Mindanao.html",
+    "Contact": "(082) 284 2000",
+    "Rating": 3.0
   },
   {
     "Name": "Butterfly House Inc",
@@ -84,7 +101,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Gadi Road, Talomo, Davao City, Davao del Sur",
+    "Website": "http://crocodilepark.ph/butterfly-house/",
+    "Contact": "(082) 286 8883",
+    "Rating": 3.5
   },
   {
     "Name": "Cape of San Agustin",
@@ -98,7 +119,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Tibanban - Lavigan Rd, Governor Generoso, Davao Oriental",
+    "Website": "Not Applicable",
+    "Contact": "Not Applicable",
+    "Rating": 4.5
   },
   {
     "Name": "Christina Orchids Garden Resort",
@@ -112,7 +137,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 2,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "80 Mcarthur Hwy, Talomo, Davao City, 8000 Davao del Sur",
+    "Website": "https://www.facebook.com/Villa-Christina-Resort-Davao-City-292941219403/",
+    "Contact": "(082) 297 1498",
+    "Rating": 3.5
   },
   {
     "Name": "Coral Garden Marine Park",
@@ -126,7 +155,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address":"Kaputian, Island Garden City of Samal, Davao del Norte",
+    "Website":"http://www.coralgardenbeach.com/",
+    "Contact":"+63 927 299 5108 / reservations@coralgardenbeach.com",
+    "Rating": 4.0
   },
   {
     "Name": "Crocodile Park",
@@ -140,7 +173,11 @@
     "NegativeLTAvg": 29,
     "Neutral": 48,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 47
+    "NeutralLTAvg": 47,
+    "Address":"Gadi Road, Talomo, Davao City, Davao del Sur",
+    "Website":"http://crocodilepark.ph/",
+    "Contact":"(082) 286 8883",
+    "Rating": 4.0
   },
   {
     "Name": "Davao Museum of History and Ethnography",
@@ -154,7 +191,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address":"Zonta Building, 113 Agusan Circle, Insular Village 1, Lanang, Davao City, Davao Del Sur",
+    "Website":"https://www.facebook.com/Davao-Museum-of-History-and-Ethnography-100456066707937/",
+    "Contact":"(082) 233 1734",
+    "Rating": 4.0
   },
   {
     "Name": "D'Bone Collector",
@@ -168,7 +209,11 @@
     "NegativeLTAvg": 4,
     "Neutral": 18,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 17
+    "NeutralLTAvg": 17,
+    "Address": "San Pedro St, Poblacion District, Davao City, Davao del Sur",
+    "Website": "https://www.facebook.com/D-Bone-Collector-Museum-Inc-216407245052538/",
+    "Contact": "0919 624 0744",
+    "Rating": 4.5
   },
 
   {
@@ -183,7 +228,11 @@
     "NegativeLTAvg": 20,
     "Neutral": 69,
     "NeutralGTAvg": 2,
-    "NeutralLTAvg": 67
+    "NeutralLTAvg": 67,
+    "Address": "Brgy. Eden, Toril, Davao City",
+    "Website": "https://www.edennaturepark.com.ph/",
+    "Contact": "(082) 286-0383 / (082) 286-0385",
+    "Rating": 4.0
   },
   {
     "Name": "Felcris Centrale",
@@ -197,7 +246,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Brgy. 40-D Quimpo Boulevard, Talomo, Davao City, 8000 Davao del Sur",
+    "Website": "http://felcriscentrale.com/",
+    "Contact": "(082) 237 7777",
+    "Rating": 3.0
   },
   {
     "Name": "GAP Farm",
@@ -211,7 +264,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Davao City Diversion Road, Talomo, Davao City, Davao del Sur",
+    "Website": "https://www.facebook.com/TheGapOrchardResort/",
+    "Contact": "(082) 244 0156",
+    "Rating": 3.5
   },
   {
     "Name": "Giant Clam Sanctuary",
@@ -225,7 +282,11 @@
     "NegativeLTAvg": 3,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Kaputian, Island Garden City of Samal",
+    "Website": "https://www.mindanaotours.com/giant-clam-sanctuary/",
+    "Contact": "Not Applicable",
+    "Rating": 4.0
   },
   {
     "Name": "GMALL The Peak",
@@ -239,7 +300,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "J.P. Laurel Ave, Obrero, Davao City, 8000 Davao del Sur",
+    "Website": "http://gaisanomalls.com/",
+    "Contact": "(082) 222 1411",
+    "Rating": 4.0
   },
   {
     "Name": "GMALL",
@@ -253,7 +318,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "J.P. Laurel Ave, Obrero, Davao City, 8000 Davao del Sur",
+    "Website": "http://gaisanomalls.com/",
+    "Contact": "(082) 222 1411",
+    "Rating": 4.0
   },
   {
     "Name": "Golden Bay Beach Resort and Spa",
@@ -267,7 +336,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Samal, Island Garden City of Samal, Davao del Norte",
+    "Website": "https://www.facebook.com/Golden-Bay-Beach-Resort-and-Spa-103556413012838/",
+    "Contact": "225-5110",
+    "Rating": 3.5
   },
   {
     "Name": "Gumamela Caverock Farm Resort",
@@ -281,7 +354,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Purok 3A- Tolosa, Barangay (Village) Matina Biao, Tugbok District, Davao City, 8000 Davao del Sur",
+    "Website": "https://www.facebook.com/Gumamela-Caverock-Farm-Resort-Hotel-200611506664515/",
+    "Contact": "(082) 284 1165",
+    "Rating": 3.5
   },
   {
     "Name": "Hagimit Falls",
@@ -295,7 +372,11 @@
     "NegativeLTAvg": 15,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Samal, Island Garden City of Samal, Davao del Norte",
+    "Website": "http://www.samalguide.com/falls/hagimit-falls/",
+    "Contact": "0999 705 5330",
+    "Rating": 4.0
   },
   {
     "Name": "Japanese Cave House",
@@ -309,7 +390,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Camudmud, Babak IGACOS, Mindanao 8000, Philippines",
+    "Website": "http://www.samalguide.com/destination/japanese-cave-house/",
+    "Contact": "+63 922 894 2950",
+    "Rating": 3.0
   },
   {
     "Name": "Japanese Tunnel",
@@ -323,7 +408,11 @@
     "NegativeLTAvg": 13,
     "Neutral": 6,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 5
+    "NeutralLTAvg": 5,
+    "Address":"AH26, Talomo, Davao City, Davao del Sur",
+    "Website":"https://www.facebook.com/DJapanese-Tunnel-Family-Resort-and-Restaurant-1731968530382614/",
+    "Contact":"(082) 299 0975",
+    "Rating":3.5
   },
   {
     "Name": "Kaputian Beach",
@@ -337,7 +426,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Kaputian, Island Garden City of Samal, Davao del Norte",
+    "Website": "http://www.samalguide.com/resort/kaputian-beach-park-resort/",
+    "Contact": "0906 687 1811",
+    "Rating": 4.0
   },
   {
     "Name": "Lolengs Mountain Spring Resort",
@@ -351,7 +444,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address":"Eden, Bayabas, Toril, Davao City, Mindanao 8000, Philippines",
+    "Website":"https://www.facebook.com/Lolengs-Mountain-Resort-130859513633540/",
+    "Contact":"+63 82 221 1099",
+    "Rating": 3.5
   },
   {
     "Name": "Lon Hua Temple",
@@ -365,7 +462,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 3,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 3
+    "NeutralLTAvg": 3,
+    "Address":"Cabaguio Ave, Agdao, Davao City, Davao del Sur",
+    "Website": "http://www.phtourguide.com/longhua-temple-in-davao/",
+    "Contact": "Not Applicable",
+    "Rating": 4.0
   },
   {
     "Name": "Magsaysay Local Fruit Stands",
@@ -379,7 +480,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Magsaysay Avenue, Davao City, Mindanao 8000, Philippines",
+    "Website": "https://www.inspirock.com/philippines/davao-city/magsaysay-local-fruits-stands-a2327339335",
+    "Contact": "Not Applicable",
+    "Rating": 4.0
   },
   {
     "Name": "Malagos Garden",
@@ -393,7 +498,11 @@
     "NegativeLTAvg": 11,
     "Neutral": 9,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 8
+    "NeutralLTAvg": 8,
+    "Address":"Calinan-Baguio-Cadalian Road, Malagos, Baguio District, Davao City, 8000 Davao del Sur",
+    "Website":"https://www.facebook.com/malagos.garden.resort/",
+    "Contact": "+63 917 625 2467 / (082) 221 1545",
+    "Rating": 4.0
   },
   {
     "Name": "Matina Town Square",
@@ -407,7 +516,11 @@
     "NegativeLTAvg": 6,
     "Neutral": 15,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 15
+    "NeutralLTAvg": 15,
+    "Address": "SM City Davao, Quimpo Blvd, Talomo, Davao City, 8000 Davao del Sur",
+    "Website": "https://www.facebook.com/matinatownsquare/",
+    "Contact": "(082) 297-1780 / 300-1780",
+    "Rating": 4.0
   },
   {
     "Name": "Maxima Beach House",
@@ -421,7 +534,11 @@
     "NegativeLTAvg": 7,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Samal, Island Garden City of Samal, Davao del Norte",
+    "Website": "http://www.samalguide.com/resort/maxima-beach-house-the-house-above-the-sea/",
+    "Contact": "0936 223 4326",
+    "Rating": 3.5
   },
   {
     "Name": "Monfort Bat Sanctuary",
@@ -435,7 +552,11 @@
     "NegativeLTAvg": 4,
     "Neutral": 7,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 6
+    "NeutralLTAvg": 6,
+    "Address": "Circumferencial Rd, Babak, Island Garden City of Samal, Davao del Norte",
+    "Website": "https://www.monfortbatsanctuary.org/",
+    "Contact": "(082) 221 8925",
+    "Rating": 4.0
   },
   {
     "Name": "Mount Apo",
@@ -449,7 +570,12 @@
     "NegativeLTAvg": 2,
     "Neutral": 2,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Davao City, Davao del Sur",
+    "Website": "http://www.mtapoadventures.com/about-the-mountain/",
+    "Contact": "Not Applicable",
+    "Rating": 4.5
+
   },
   {
     "Name": "Mt Galintan Sleeping Dinosaur",
@@ -463,7 +589,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Mati, Davao City, Mindanao, Philippines",
+    "Website": "https://peakery.com/mount-galintan-philippines/",
+    "Contact": "Not Applicable",
+    "Rating": 3.5
   },
   {
     "Name": "Mt Puting Bato",
@@ -477,7 +607,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Barangay Guilon, Mindanao, Philippines",
+    "Website": "http://www.choosephilippines.com/go/mountains-and-volcanoes/4527/climb-mt-puting-bato-samal-island/",
+    "Contact": "Not Applicable",
+    "Rating": 4.5
   },
   {
     "Name": "Museo Dabawenyo",
@@ -491,7 +625,11 @@
     "NegativeLTAvg": 7,
     "Neutral": 17,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 16
+    "NeutralLTAvg": 16,
+    "Address": "Andres Bonifacio Rotunda, Poblacion District, Davao City, Davao del Sur",
+    "Website": "https://www.facebook.com/museodabawenyo/",
+    "Contact": "(082) 222 6011",
+    "Rating": 4.0
   },
   {
     "Name": "Osmena Park",
@@ -505,7 +643,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Poblacion District, Davao City, Davao del Sur",
+    "Website": "http://www.phtourguide.com/osmena-park-in-davao-city/",
+    "Contact": "Not Applicable",
+    "Rating": 3.5
   },
   {
     "Name": "Panas Falls",
@@ -519,7 +661,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address":"New Corella, Davao del Norte",
+    "Website":"https://www.facebook.com/PanasNewCorella/",
+    "Contact":"0921 265 6668",
+    "Rating":4.0
   },
   {
     "Name": "Paradise Island Park Beach Resort",
@@ -533,7 +679,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Caliclic, Babak, Island Garden City of Samal, Davao del Norte",
+    "Website": "http://www.paradiseislanddavao.com",
+    "Contact": "(+63 82) 233-0251, 234-1229, 300-2343 / 0922 875 0856",
+    "Rating": 4.5
   },
   {
     "Name": "Peoples Park",
@@ -547,7 +697,11 @@
     "NegativeLTAvg": 17,
     "Neutral": 8,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 8
+    "NeutralLTAvg": 8,
+    "Address": "Uy Building, 49 Palma Gil St, Poblacion District, Davao City, 8000 Davao del Sur",
+    "Website": "http://primer.com.ph/travel/2017/04/30/peoples-park-in-davao-city/",
+    "Contact": "0907 907 7807",
+    "Rating": 4.0
   },
   {
     "Name": "Philippine Eagle Center",
@@ -561,7 +715,11 @@
     "NegativeLTAvg": 29,
     "Neutral": 59,
     "NeutralGTAvg": 4,
-    "NeutralLTAvg": 55
+    "NeutralLTAvg": 55,
+    "Address": "Malagos, Calinan, Davao City, Mindanao, Philippines",
+    "Website": "http://www.philippineeaglefoundation.org/philippine-eagle-center",
+    "Contact": "+63 917 719 8093",
+    "Rating": 4.0
   },
   {
     "Name": "Redemptorist Church",
@@ -575,7 +733,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "J.P. Laurel Ave, Bajada, Davao City, 8000 Davao del Sur",
+    "Website": "https://www.mass-schedules.com/catholic-church/57/redemptorist-church.html",
+    "Contact": "(082) 227 6647",
+    "Rating": 4.0
   },
   {
     "Name": "Roxas Avenue Night Market",
@@ -589,7 +751,11 @@
     "NegativeLTAvg": 3,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Roxas Ave, Poblacion District, Davao City, Davao del Sur",
+    "Website": "http://mindanaotimes.net/wanderlust-rediscovering-roxas-night-market/",
+    "Contact": "Not Applicable",
+    "Rating": 4.0
   },
   {
     "Name": "Samal Watersports Center",
@@ -603,7 +769,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Baranya Caliclic, Island Garden City of Samal, 8119 Davao del Norte",
+    "Website": "https://www.facebook.com/samal.watersports.center/",
+    "Contact": "0918 957 5346",
+    "Rating": 4.5
   },
   {
     "Name": "San Pedro Cathedral",
@@ -617,7 +787,11 @@
     "NegativeLTAvg": 5,
     "Neutral": 9,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 8
+    "NeutralLTAvg": 8,
+    "Address": "San Pedro Street, Davao City",
+    "Website": "https://www.mass-schedules.com/catholic-church/30/san-pedro-cathedral.html",
+    "Contact": "(082) 226-4740",
+    "Rating": 4.0
   },
   {
     "Name": "Seawall",
@@ -631,7 +805,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Ecoland Drive, Matina, Davao City",
+    "Website": "http://davaocitybybattad.blogspot.com/2011/09/davao-baywalk-and-park.html",
+    "Contact": "Not Applicable",
+    "Rating": 3.0
   },
   {
     "Name": "Shrine of the Holy Infant Jesus of Prague",
@@ -645,7 +823,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 5,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 4
+    "NeutralLTAvg": 4,
+    "Address": "Shrine Hills, Matina Davao",
+    "Website": "http://www.davaocitydirectory.com/churches/sto-nino-shrine.html",
+    "Contact": "(+63-82) 297-2911 / 297-2054",
+    "Rating": 4.5
   },
   {
     "Name": "SM City Davao",
@@ -659,7 +841,11 @@
     "NegativeLTAvg": 4,
     "Neutral": 3,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 3
+    "NeutralLTAvg": 3,
+    "Address": "Ecoland Dr, Ecoland Subd., Matina, Davao City, Davao del Sur",
+    "Website": "https://www.smsupermalls.com/mall-locator/sm-city-davao/information",
+    "Contact": "(+6382) 2976998",
+    "Rating": 4.0
   },
   {
     "Name": "SM Lanang Premiere",
@@ -673,7 +859,11 @@
     "NegativeLTAvg": 4,
     "Neutral": 12,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 12
+    "NeutralLTAvg": 12,
+    "Address": "SM City Lanang Premier, J.P. Laurel Ave, Agdao, Davao City, 8000 Davao del Sur",
+    "Website": "https://www.smsupermalls.com/mall-locator/sm-lanang-premier/information",
+    "Contact": "292-293",
+    "Rating": 4.0
   },
   {
     "Name": "Sta Ana Shrine",
@@ -687,7 +877,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Sta. Ana Avenue, Davao City, Davao del Sur",
+    "Website": "https://www.mass-schedules.com/catholic-church/657/sta-ana-shrine-parish.html",
+    "Contact": "227-3842",
+    "Rating": 4.5
   },
   {
     "Name": "Sul Orchids Palma Gil",
@@ -701,7 +895,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Km 18 Palma Gil St, Tugbok, Davao City, 8000 Davao del Sur",
+    "Website": "http://sulorchids.weebly.com/",
+    "Contact": "(082) 293 0036",
+    "Rating": 4.0
   },
   {
     "Name": "Tagbaobo Falls",
@@ -715,7 +913,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 2,
     "NeutralGTAvg": 1,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Samal City, Davao del Norte",
+    "Website": "http://www.samalguide.com/falls/tagbaobo-falls/",
+    "Contact": "Not Applicable",
+    "Rating": 3.0
   },
   {
     "Name": "Talomo Beach Resort",
@@ -729,7 +931,11 @@
     "NegativeLTAvg": 0,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Talomo Davao City",
+    "Website": "Not Applicable",
+    "Contact": "Not Applicable",
+    "Rating": 3.0
   },
   {
     "Name": "Tamayong Prayer Mountain",
@@ -743,7 +949,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Calinan District, Davao City, Davao del Sur",
+    "Website": "https://wayph.com/travel-guide-tamayong-prayer-mountain-in-davao-city/",
+    "Contact": "(082) 234 2866",
+    "Rating": 4.0
   },
   {
     "Name": "Tribu K Mindanawan Cultural Village",
@@ -757,7 +967,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Gadi Road, Talomo, Davao City, Davao del Sur",
+    "Website": "http://crocodilepark.ph/tribu-kmindanawan/",
+    "Contact": "(082) 286 8833",
+    "Rating": 4.5
   },
   {
     "Name": "Vanishing Island",
@@ -771,7 +985,11 @@
     "NegativeLTAvg": 1,
     "Neutral": 2,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 2
+    "NeutralLTAvg": 2,
+    "Address": "Coast of Tambo, Babak in Samal",
+    "Website": "https://triptheislands.com/destinations/the-vanishing-island-samal-davao/",
+    "Contact": "Not Applicable",
+    "Rating": 4.0
   },
   {
     "Name": "Zip City",
@@ -785,7 +1003,11 @@
     "NegativeLTAvg": 2,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Langub Rd, Talomo, Davao City, Davao del Sur",
+    "Website": "https://www.facebook.com/zipcity/",
+    "Contact": "(082) 221 7823",
+    "Rating": 4.0
   },
   {
     "Name": "Zorb Park",
@@ -799,6 +1021,11 @@
     "NegativeLTAvg": 3,
     "Neutral": 1,
     "NeutralGTAvg": 0,
-    "NeutralLTAvg": 1
+    "NeutralLTAvg": 1,
+    "Address": "Gadi Road, Talomo, Davao City, Davao del Sur",
+    "Website": "http://davaocitybybattad.blogspot.com/2011/10/davao-zorb-park.html",
+    "Contact": "(082) 286 8883",
+    "Rating": 4.0
+    
   }
 ]
