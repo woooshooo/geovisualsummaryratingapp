@@ -22,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
 public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
@@ -58,10 +60,50 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         Button btn_review = view.findViewById(R.id.btn_review);
         Button btn_info = view.findViewById(R.id.btn_info);
 
+        ArrayList<Reviews> reviewsArrayList = new ArrayList<>();
+        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
+        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
+        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
+        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
+        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
+        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
+        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
+        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
+        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
+        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
+        CustomListAdapter adapter = new CustomListAdapter(mContext, reviewsArrayList);
+
         btn_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "Showing reviews of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                dialog.setTitle(title);
+                dialog.setCancelable(false);
+                dialog.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Reviews user = (Reviews) adapter.getItem(i);
+                        AlertDialog.Builder builderInner = new AlertDialog.Builder(mContext);
+                        builderInner.setMessage(user.getReview() + "\n \n Reviewed by: "+ user.getUser());
+                        builderInner.setTitle(title);
+                        builderInner.setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogforexit,int which) {
+                                dialogforexit.dismiss();
+                                dialog.show();
+                            }
+                        });
+                        builderInner.show();
+                    }
+                });
+                dialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 

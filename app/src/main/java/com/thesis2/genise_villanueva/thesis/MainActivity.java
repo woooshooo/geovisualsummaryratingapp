@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -48,11 +50,26 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar subjectivityBar;
     private Mapbox mapBox;
     private AssetsController assetsController;
+    private FirebaseController firebaseController;
+    private ListView reviewList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         assetsController = new AssetsController(MainActivity.this);
+        firebaseController = new FirebaseController(MainActivity.this, savedInstanceState);
+        firebaseController.initializeDB();
+        //TEST ON ADDING REVIEWS
+        int x = 0;
+        if (x != 0) {
+            firebaseController.writeReviews();
+            x++;
+        }
+        firebaseController.viewData();
+
 //        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
         Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
         setContentView(R.layout.activity_main);
@@ -75,6 +92,20 @@ public class MainActivity extends AppCompatActivity {
         btn_center = findViewById(R.id.btn_center);
         tvSubjectivity = findViewById(R.id.tvSubjectivity);
         subjectivityBar = findViewById(R.id.subjectivityBar);
+        reviewList = findViewById(R.id.reviewList);
+
+
+//        // Setup the data source
+//        ArrayList<Reviews> reviewsArrayList = new ArrayList<>();
+//        reviewsArrayList.add(new Reviews("id","user","location","review"));
+//
+//        // instantiate the custom list adapter
+//        CustomListAdapter adapter = new CustomListAdapter(this, reviewsArrayList);
+//
+//        // get the ListView and attach the adapter
+//        ListView itemsListView = findViewById(R.id.reviewList);
+//        itemsListView.setAdapter(adapter);
+
         mapView.onCreate(savedInstanceState);
 
         if (Mapbox.isConnected()) {
@@ -118,17 +149,17 @@ public class MainActivity extends AppCompatActivity {
                             int reviewCount = jsonObjectData.getInt("ReviewCount");
                             int positive = jsonObjectData.getInt("Positive");
                             int negative = jsonObjectData.getInt("Negative");
-                            double perc = Math.round((((double) positive)/reviewCount)*100);
-                            if (loc.equals(location)){
+                            double perc = Math.round((((double) positive) / reviewCount) * 100);
+                            if (loc.equals(location)) {
 //                                Timber.d("loc is equal to location");
-                                if (positive > negative){
+                                if (positive > negative) {
 //                                    Log.d(TAG, "positive > negative");
                                     markerOptions.icon(lightIcon);
-                                    if (perc > 90){
+                                    if (perc > 90) {
                                         markerOptions.icon(darkIcon);
-                                    } else if (perc > 70 &&  perc < 80) {
+                                    } else if (perc > 70 && perc < 80) {
                                         markerOptions.icon(normalIcon);
-                                    } else if ( perc > 50 && perc < 71) {
+                                    } else if (perc > 50 && perc < 71) {
                                         markerOptions.icon(lightIcon);
                                     } else {
                                         Timber.d("perc below 50");
@@ -157,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                     mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
-                            pieChart.animateXY(1000,1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
+                            pieChart.animateXY(1000, 1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
                             mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
 //                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
                             List<PieEntry> entries = new ArrayList<>();
@@ -186,18 +217,18 @@ public class MainActivity extends AppCompatActivity {
                                     if (location.equals(marker.getTitle())) {
                                         entries.add(new PieEntry(positive, "Positive"));
                                         entries.add(new PieEntry(neutral, "Neutral"));
-                                        entries.add(new PieEntry(negative,"Negative"));
-                                        int subjectivityScoreBar = (int) Math.round(subjectivityScore*100);
-                                        pieChart.setCenterText(reviewCount +" Reviews");
+                                        entries.add(new PieEntry(negative, "Negative"));
+                                        int subjectivityScoreBar = (int) Math.round(subjectivityScore * 100);
+                                        pieChart.setCenterText(reviewCount + " Reviews");
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                             subjectivityBar.setProgress(subjectivityScoreBar, true);
                                         }
-                                        tvSubjectivity.setText("Subjectivity: "+ subjectivityScoreBar +"%");
+                                        tvSubjectivity.setText("Subjectivity: " + subjectivityScoreBar + "%");
                                     }
-                                    PieDataSet dataSet = new PieDataSet(entries,"Reviews");
+                                    PieDataSet dataSet = new PieDataSet(entries, "Reviews");
                                     PieData data = new PieData(dataSet);
-                                    Highlight h = new Highlight(0, 0,0); // dataset index for piechart is always 0
-                                    pieChart.highlightValues(new Highlight[] { h });
+                                    Highlight h = new Highlight(0, 0, 0); // dataset index for piechart is always 0
+                                    pieChart.highlightValues(new Highlight[]{h});
                                     pieChart.getDescription().setEnabled(false);
                                     dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
                                     dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
@@ -226,8 +257,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "onCreate: !isConnect to Mapbox");
         }
     }
-
-
 
 
     @Override
@@ -271,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-
 
 
 }
