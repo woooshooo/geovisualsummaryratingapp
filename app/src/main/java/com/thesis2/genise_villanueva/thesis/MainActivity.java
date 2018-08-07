@@ -33,8 +33,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,11 +46,15 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton btn_center;
     private TextView tvSubjectivity;
     private ProgressBar subjectivityBar;
+    private Mapbox mapBox;
+    private AssetsController assetsController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
+        assetsController = new AssetsController(MainActivity.this);
+//        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
+        Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
         setContentView(R.layout.activity_main);
         pieChart = findViewById(R.id.pieChart);
         pieChart.setTransparentCircleRadius(10);
@@ -103,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jsonObject;
                         JSONArray jsonArrayData;
                         JSONObject jsonObjectData;
-                        jsonArray = new JSONArray(loadCoordinatesFromAsset());
+                        jsonArray = new JSONArray(assetsController.loadCoordinatesFromAsset());
                         jsonObject = new JSONObject();
-                        jsonArrayData = new JSONArray(loadDataFromAsset());
+                        jsonArrayData = new JSONArray(assetsController.loadDataFromAsset());
                         jsonObjectData = new JSONObject();
                         MarkerOptions markerOptions = new MarkerOptions();
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -118,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
                             int negative = jsonObjectData.getInt("Negative");
                             double perc = Math.round((((double) positive)/reviewCount)*100);
                             if (loc.equals(location)){
-                                Timber.d("loc is equal to location");
+//                                Timber.d("loc is equal to location");
                                 if (positive > negative){
-                                    Log.d(TAG, "positive > negative");
+//                                    Log.d(TAG, "positive > negative");
                                     markerOptions.icon(lightIcon);
                                     if (perc > 90){
                                         markerOptions.icon(darkIcon);
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray jsonArrayData;
                             JSONObject jsonObjectData;
                             try {
-                                jsonArrayData = new JSONArray(loadDataFromAsset());
+                                jsonArrayData = new JSONArray(assetsController.loadDataFromAsset());
                                 jsonObjectData = new JSONObject();
                                 for (int x = 0; x < jsonArrayData.length(); x++) {
                                     jsonObjectData = jsonArrayData.getJSONObject(x);
@@ -225,38 +227,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Turn Coordinates JSON to String from Assets folder
-    public String loadCoordinatesFromAsset() {
-        String json;
-        try {
-            InputStream inputStream = this.getAssets().open("coordinates.json");
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            Log.e(TAG, "loadCoordinatesJSONFromAsset: " + ex.getMessage());
-            return null;
-        }
-        return json;
-    }
-    //Turn Data JSON to String from Assets folder
-    public String loadDataFromAsset() {
-        String json = null;
-        try {
-            InputStream inputStream = this.getAssets().open("data.json");
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            Log.e(TAG, "loadDataJSONFromAsset: " + ex.getMessage());
-            return null;
-        }
-        return json;
-    }
+
 
 
     @Override

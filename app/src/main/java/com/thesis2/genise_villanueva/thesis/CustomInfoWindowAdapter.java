@@ -5,17 +5,22 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
@@ -24,54 +29,50 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
     private static final String TAG = "CustomInfoWindowAdapter";
     private final View mWindow;
     private Context mContext;
-    String title;
     private MainActivity mainActivity;
-    private int images[] = new int[]{R.drawable.abreeza_0,R.drawable.abreeza_1};
+    private AssetsController assetsController;
+    String title;
+    private JSONArray jsonArrayData;
+    private JSONObject jsonObjectData;
+    private int dpAsPixels;
+    private Marker globalMarker;
+//    private int images[] = new int[]{R.drawable.abreeza_0,R.drawable.abreeza_1};
 
     CustomInfoWindowAdapter(Context context) {
         this.mWindow = LayoutInflater.from(context).inflate(R.layout.custom_info_window, null);
         this.mContext = context;
+        assetsController = new AssetsController(context);
+        float scale = mContext.getResources().getDisplayMetrics().density;
+        dpAsPixels = (int) (10* scale + 0.5f);
     }
 
-    private void renderWindowText(Marker marker, View view){
-
+    private void renderWindowText(Marker marker, View view) {
+        globalMarker = marker;
+        ImagesController imagesController = new ImagesController(mContext);
         title = marker.getTitle();
         TextView tvTitle = view.findViewById(R.id.tvTitle);
-        ImageView imageView1 = view.findViewById(R.id.imageView1);
-        ImageView imageView2 = view.findViewById(R.id.imageView2);
+        if (!title.equals("")) {
+            tvTitle.setText(title);
+            imagesController.renderImages(marker, view, tvTitle);
+        }
         Button btn_review = view.findViewById(R.id.btn_review);
         Button btn_info = view.findViewById(R.id.btn_info);
-
-        imageView1.setImageResource(images[0]);
-        imageView2.setImageResource(images[1]);
 
         btn_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Showing reviews of "+ marker.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Showing reviews of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
         btn_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Showing info of "+ marker.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Showing info of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
                 marker.hideInfoWindow();
                 showDialogBox();
-        }
-    });
-
-
-        if(!title.equals("")){
-            tvTitle.setText(title);
-        }
-
-//        String snippet = marker.getSnippet();
-//        TextView tvSnippet = view.findViewById(R.id.tvSnippet);
-//
-//        if(!snippet.equals("")){
-//            tvSnippet.setText(snippet);
-//        }
+            }
+        });
 
     }
 
@@ -81,9 +82,8 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         return mWindow;
     }
 
-    private void showDialogBox(){
+    private void showDialogBox() {
         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-
         // Set Custom Title
         TextView customTitle = new TextView(mContext);
         // Title Properties
@@ -93,13 +93,36 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         customTitle.setTextColor(Color.WHITE);
         customTitle.setTextSize(20);
         alertDialog.setCustomTitle(customTitle);
-
         // Set Message
         TextView msg = new TextView(mContext);
         // Message Properties
-        msg.setText("I am a Custom Dialog Box. \n Please Customize me.");
-        msg.setGravity(Gravity.CENTER_HORIZONTAL);
+        //msg.setText("I am a Custom Dialog Box. \n Please Customize me.");
+        msg.setGravity(Gravity.LEFT);
         msg.setTextColor(Color.WHITE);
+        msg.setLinksClickable(true);
+        msg.setLinkTextColor(Color.YELLOW);
+        msg.setAutoLinkMask(Linkify.ALL);
+        msg.setPadding(dpAsPixels,dpAsPixels,dpAsPixels,dpAsPixels);
+
+        try {
+            jsonArrayData = new JSONArray(assetsController.loadDataFromAsset());
+            jsonObjectData = new JSONObject();
+            for (int i = 0; i < jsonArrayData.length(); i++) {
+                jsonObjectData = jsonArrayData.getJSONObject(i);
+                String location = jsonObjectData.getString("Name");
+                if (title.contentEquals(location)){
+                    String address = jsonObjectData.getString("Address");
+                    String website = jsonObjectData.getString("Website");
+                    String contact = jsonObjectData.getString("Contact");
+                    String rating = jsonObjectData.getString("Rating");
+                    msg.setText("Address: "+ address+ " \nWebsite: "+website+"\nContact: "+contact+"\nRating: "+rating);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        msg.setMovementMethod(LinkMovementMethod.getInstance());
         alertDialog.setView(msg);
 
         // Set Button
@@ -110,7 +133,7 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
 //            }
 //        });
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,"BACK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "EXIT", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // Perform Action on Button
             }
@@ -134,8 +157,6 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         cancelBT.setLayoutParams(negBtnLP);
 
     }
-
-
 
 
 }
