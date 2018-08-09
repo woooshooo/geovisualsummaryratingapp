@@ -65,10 +65,12 @@ public class MainActivity extends AppCompatActivity {
         //TEST ON ADDING REVIEWS
         int x = 0;
         if (x == 0) {
-            firebaseController.writeReviewstoFirebase();
+//            firebaseController.writeDatastoFirebase();
+//            firebaseController.writeReviewstoFirebase();
+//            firebaseController.removeReviewsfromFirebase();
             x++;
         }
-        firebaseController.viewData();
+//        firebaseController.viewData();
 
 //        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
         Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
@@ -93,18 +95,6 @@ public class MainActivity extends AppCompatActivity {
         tvSubjectivity = findViewById(R.id.tvSubjectivity);
         subjectivityBar = findViewById(R.id.subjectivityBar);
         reviewList = findViewById(R.id.reviewList);
-
-
-//        // Setup the data source
-//        ArrayList<Reviews> reviewsArrayList = new ArrayList<>();
-//        reviewsArrayList.add(new Reviews("id","user","location","review"));
-//
-//        // instantiate the custom list adapter
-//        CustomListAdapter adapter = new CustomListAdapter(this, reviewsArrayList);
-//
-//        // get the ListView and attach the adapter
-//        ListView itemsListView = findViewById(R.id.reviewList);
-//        itemsListView.setAdapter(adapter);
 
         mapView.onCreate(savedInstanceState);
 

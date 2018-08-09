@@ -1,10 +1,12 @@
 package com.thesis2.genise_villanueva.thesis;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Gravity;
@@ -15,6 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
@@ -38,7 +46,8 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
     private JSONObject jsonObjectData;
     private int dpAsPixels;
     private Marker globalMarker;
-//    private int images[] = new int[]{R.drawable.abreeza_0,R.drawable.abreeza_1};
+    private ArrayList<Reviews> reviewsArrayList = new ArrayList<>();
+    private ArrayList<Data> dataArrayList = new ArrayList<>();
 
     CustomInfoWindowAdapter(Context context) {
         this.mWindow = LayoutInflater.from(context).inflate(R.layout.custom_info_window, null);
@@ -60,60 +69,61 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         Button btn_review = view.findViewById(R.id.btn_review);
         Button btn_info = view.findViewById(R.id.btn_info);
 
-        ArrayList<Reviews> reviewsArrayList = new ArrayList<>();
-        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
-        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
-        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
-        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
-        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
-        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
-        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
-        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
-        reviewsArrayList.add(new Reviews("id","user","location","Abreeza Mall is a convenient place to shop and eat when staying at Seda Hotel in JP Laurel, Davao City. It is right across the hotel. There are a number of restaurants to choose from for lunch and dinner- fastfoods, regular dine-in e.g, Japanese (Sumosan), Shakey’s, Jollibee, Yellow Cab, For snacks and coffee, you can go to Starbuck’s , J.Company , Dunkin Donuts or one of the food stalls/carts like Fruits in Ice Cream, etc. Most of the shops are those found in Manila. Foreign brands are present - Mango, Esprit, Gap, Giordano, Charles & Keith, Hush Puppies, H&M, etc. A few interesting local brands are available like Chimes, Cocoon (nice formal wear at reasonable prices), Just G (for tweens and teens), Mendez. There are gadget shops on the upper floor. There is also a Robinson’s Dept Store (poor rating for me) and a Robinson’s Supermarket (good rating for me). If you just want to stroll around, mall is ok but if you want to shop, try other malls."));
-        reviewsArrayList.add(new Reviews("id2","user1","location","A great mall with all kinds of products westerners are used to seeing. Very good choice of restaurants and the prices are excellent too."));
+
         CustomListAdapter adapter = new CustomListAdapter(mContext, reviewsArrayList);
 
-        btn_review.setOnClickListener(new View.OnClickListener() {
+        /** Query reviews in Database.
+         *
+         * **/
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child("review").orderByChild("location").equalTo(title);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, "Showing reviews of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-                dialog.setTitle(title);
-                dialog.setCancelable(false);
-                dialog.setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Reviews user = (Reviews) adapter.getItem(i);
-                        AlertDialog.Builder builderInner = new AlertDialog.Builder(mContext);
-                        builderInner.setMessage(user.getReview() + "\n \n Reviewed by: "+ user.getUser());
-                        builderInner.setTitle(title);
-                        builderInner.setPositiveButton("Back", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogforexit,int which) {
-                                dialogforexit.dismiss();
-                                dialog.show();
-                            }
-                        });
-                        builderInner.show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                reviewsArrayList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot review : dataSnapshot.getChildren()) {
+                        Reviews reviews = review.getValue(Reviews.class);
+                        reviewsArrayList.add(reviews);
                     }
-                });
-                dialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
-        btn_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, "Showing info of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
-                marker.hideInfoWindow();
-                showDialogBox();
-            }
+        btn_review.setOnClickListener((View view1) -> {
+            Toast.makeText(mContext, "Showing reviews of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+            dialog.setTitle(title);
+            dialog.setCancelable(false);
+            dialog.setAdapter(adapter, (dialogInterface, i) -> {
+                Reviews user = (Reviews) adapter.getItem(i);
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(mContext);
+                builderInner.setMessage(user.getReview() + "\n \n Reviewed by: "+ user.getUser());
+                builderInner.setTitle(title);
+                builderInner.setPositiveButton("Back", (dialogforexit, which) -> {
+                    dialogforexit.dismiss();
+                    dialog.show();
+                });
+                builderInner.show();
+            });
+            dialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int position) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        });
+
+        btn_info.setOnClickListener((View view12) -> {
+            Toast.makeText(mContext, "Showing info of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+            marker.hideInfoWindow();
+            showDialogBox();
         });
 
     }
@@ -147,6 +157,37 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         msg.setAutoLinkMask(Linkify.ALL);
         msg.setPadding(dpAsPixels,dpAsPixels,dpAsPixels,dpAsPixels);
 
+
+        /**Querying location infos from firebase**/
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child("data").orderByChild("location").equalTo(title);
+        query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dataArrayList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Data data = ds.getValue(Data.class);
+                        dataArrayList.add(data);
+                        assert data != null;
+                        if (data.getLocation().equals(title)){
+                            LocationInfo locationInfo = data.getLocationInfo();
+                            msg.setText("Address: "+ locationInfo.getAddress()+ " \nWebsite: "+locationInfo.getWebsite()+"\nContact: "+locationInfo.getContactno()+"\nRating: "+locationInfo.getRating());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
         try {
             jsonArrayData = new JSONArray(assetsController.loadDataFromAsset());
             jsonObjectData = new JSONObject();
@@ -158,8 +199,9 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
                     String website = jsonObjectData.getString("Website");
                     String contact = jsonObjectData.getString("Contact");
                     String rating = jsonObjectData.getString("Rating");
-                    msg.setText("Address: "+ address+ " \nWebsite: "+website+"\nContact: "+contact+"\nRating: "+rating);
+//                    msg.setText("Address: "+ address+ " \nWebsite: "+website+"\nContact: "+contact+"\nRating: "+rating);
                 }
+
             }
 
         } catch (JSONException e) {

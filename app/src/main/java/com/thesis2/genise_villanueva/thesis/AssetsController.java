@@ -1,7 +1,6 @@
 package com.thesis2.genise_villanueva.thesis;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +9,8 @@ import timber.log.Timber;
 
 public class AssetsController {
     private Context mContext;
+    private static final String TAG = "AssetsController";
+
     AssetsController(Context context){
         this.mContext = context;
     }
@@ -45,4 +46,8 @@ public class AssetsController {
         }
         return json;
     }
+
+
+
+
 }
