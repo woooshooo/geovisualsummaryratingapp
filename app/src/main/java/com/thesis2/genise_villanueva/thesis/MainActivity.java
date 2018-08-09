@@ -3,6 +3,7 @@ package com.thesis2.genise_villanueva.thesis;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -19,7 +21,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -50,22 +51,21 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar subjectivityBar;
     private Mapbox mapBox;
     private AssetsController assetsController;
-    private FirebaseController firebaseController;
     private ListView reviewList;
+    private boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         assetsController = new AssetsController(MainActivity.this);
-        firebaseController = new FirebaseController(MainActivity.this, savedInstanceState);
+        FirebaseController firebaseController = new FirebaseController(MainActivity.this, savedInstanceState);
         firebaseController.initializeDB();
         //TEST ON ADDING REVIEWS
         int x = 0;
-        if (x != 0) {
-            firebaseController.writeReviews();
+        if (x == 0) {
+            firebaseController.writeReviewstoFirebase();
             x++;
         }
         firebaseController.viewData();
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Log.e(TAG, "onCreate: !isConnect to Mapbox");
+            Timber.e("onCreate: !isConnect to Mapbox");
         }
     }
 
@@ -293,6 +293,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> {
+            doubleBackToExitPressedOnce = false;
+        }, 2000);
     }
 
     @Override

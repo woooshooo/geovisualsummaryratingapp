@@ -126,6 +126,7 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
 
     private void showDialogBox() {
         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+        alertDialog.setCancelable(false);
         // Set Custom Title
         TextView customTitle = new TextView(mContext);
         // Title Properties
