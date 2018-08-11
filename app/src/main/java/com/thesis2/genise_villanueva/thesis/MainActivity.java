@@ -1,5 +1,6 @@
 package com.thesis2.genise_villanueva.thesis;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,12 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -31,10 +38,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +73,8 @@ public class MainActivity extends AppCompatActivity {
 //            firebaseController.removeReviewsfromFirebase();
             x++;
         }
-//        firebaseController.viewData();
-
-//        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
-        Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
+        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
+//        Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
         setContentView(R.layout.activity_main);
         pieChart = findViewById(R.id.pieChart);
         pieChart.setTransparentCircleRadius(10);
@@ -120,123 +121,122 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    //Adding Markers
-                    try {
-                        JSONArray jsonArray;
-                        JSONObject jsonObject;
-                        JSONArray jsonArrayData;
-                        JSONObject jsonObjectData;
-                        jsonArray = new JSONArray(assetsController.loadCoordinatesFromAsset());
-                        jsonObject = new JSONObject();
-                        jsonArrayData = new JSONArray(assetsController.loadDataFromAsset());
-                        jsonObjectData = new JSONObject();
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            jsonObject = jsonArray.getJSONObject(i);
-                            jsonObjectData = jsonArrayData.getJSONObject(i);
-                            String loc = jsonObject.getString("Location");
-                            String location = jsonObjectData.getString("Name");
-                            int reviewCount = jsonObjectData.getInt("ReviewCount");
-                            int positive = jsonObjectData.getInt("Positive");
-                            int negative = jsonObjectData.getInt("Negative");
-                            double perc = Math.round((((double) positive) / reviewCount) * 100);
-                            if (loc.equals(location)) {
-//                                Timber.d("loc is equal to location");
-                                if (positive > negative) {
-//                                    Log.d(TAG, "positive > negative");
-                                    markerOptions.icon(lightIcon);
-                                    if (perc > 90) {
+                    //adding markers from firebase
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                    Query query = reference.child("data").orderByChild("location");
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                    Data data = ds.getValue(Data.class);
+                                    assert data != null;
+                                    String loc = data.getLocation();
+                                    Coordinates coordinates = data.getCoordinates();
+                                    double lat = coordinates.getLatitude();
+                                    double lng = coordinates.getLongtitude();
+                                    LatLng newLatLng = new LatLng(lat, lng);
+                                    markerOptions.position(newLatLng);
+                                    SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                    int reviewCount = sentimentInfo.getReviewcount();
+                                    int positive = sentimentInfo.getPositive();
+                                    int negative = sentimentInfo.getNegative();
+                                    double perc = Math.round((((double) positive) / reviewCount) * 100);
+                                    if (positive > negative) {
                                         markerOptions.icon(darkIcon);
-                                    } else if (perc > 70 && perc < 80) {
-                                        markerOptions.icon(normalIcon);
-                                    } else if (perc > 50 && perc < 71) {
-                                        markerOptions.icon(lightIcon);
+                                        if (perc >= 90) {
+                                            markerOptions.icon(darkIcon);
+                                        } else if (perc >= 70 && perc <= 80) {
+                                            markerOptions.icon(normalIcon);
+                                        } else if (perc > 50 && perc < 71) {
+                                            markerOptions.icon(lightIcon);
+                                        } else {
+                                            Timber.d("perc below 50");
+                                        }
                                     } else {
-                                        Timber.d("perc below 50");
+                                        Timber.d("negative greater than positive");
                                     }
-                                } else {
-                                    Timber.d("negative greater than positive");
+                                    markerOptions.title(loc);
+                                    mapboxMap.addMarker(markerOptions);
                                 }
-                            } else {
-                                Timber.e("loc IS NOT equal to location");
                             }
-                            markerOptions.title(loc);
-                            double lat = jsonObject.getDouble("Lat");
-                            double lng = jsonObject.getDouble("Lng");
-                            LatLng newLatLng = new LatLng(lat, lng);
-                            markerOptions.position(newLatLng);
-                            mapboxMap.addMarker(markerOptions);
-
+                            LatLng center = new LatLng(7.0910885, 125.6112563);
+                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
                         }
-                        LatLng center = new LatLng(7.0910885, 125.6112563);
-                        mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Timber.e(String.valueOf(databaseError));
+                        }
+                    });
+
 
                     mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
                             pieChart.animateXY(1000, 1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
                             mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
-//                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
                             List<PieEntry> entries = new ArrayList<>();
 
-                            JSONArray jsonArrayData;
-                            JSONObject jsonObjectData;
-                            try {
-                                jsonArrayData = new JSONArray(assetsController.loadDataFromAsset());
-                                jsonObjectData = new JSONObject();
-                                for (int x = 0; x < jsonArrayData.length(); x++) {
-                                    jsonObjectData = jsonArrayData.getJSONObject(x);
-                                    String location = jsonObjectData.getString("Name");
-                                    int reviewCount = jsonObjectData.getInt("ReviewCount");
-                                    double subjectivityScore = jsonObjectData.getDouble("SubjectivityScoreAverage");
-                                    int positive = jsonObjectData.getInt("Positive");
-                                    int positiveGTAvg = jsonObjectData.getInt("PositiveGTAvg");
-                                    int positiveLTAvg = jsonObjectData.getInt("PositiveLTAvg");
-                                    int negative = jsonObjectData.getInt("Negative");
-                                    int negativeGTAvg = jsonObjectData.getInt("NegativeGTAvg");
-                                    int negativeLTAvg = jsonObjectData.getInt("NegativeLTAvg");
-                                    int neutral = jsonObjectData.getInt("Neutral");
-                                    int neutralGTAvg = jsonObjectData.getInt("NeutralGTAvg");
-                                    int neutralLTAvg = jsonObjectData.getInt("NeutralLTAvg");
+                            //get data from firebase
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                            Query query = reference.child("data").orderByChild("location");
+                            query.addValueEventListener(new ValueEventListener() {
+                                @SuppressLint("SetTextI18n")
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()){
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                            Data data = ds.getValue(Data.class);
+                                            assert data != null;
+                                            String location = data.getLocation();
+                                            SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                            int reviewCount = sentimentInfo.getReviewcount();
+                                            double subjectivityScore = sentimentInfo.getSubjectivityscoreaverage();
+                                            int positive = sentimentInfo.getPositive();
+                                            int negative = sentimentInfo.getNegative();
+                                            int neutral = sentimentInfo.getNeutral();
 
-
-                                    if (location.equals(marker.getTitle())) {
-                                        entries.add(new PieEntry(positive, "Positive"));
-                                        entries.add(new PieEntry(neutral, "Neutral"));
-                                        entries.add(new PieEntry(negative, "Negative"));
-                                        int subjectivityScoreBar = (int) Math.round(subjectivityScore * 100);
-                                        pieChart.setCenterText(reviewCount + " Reviews");
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                            subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                            if (location.equals(marker.getTitle())) {
+                                                entries.add(new PieEntry(positive, "Positive"));
+                                                entries.add(new PieEntry(neutral, "Neutral"));
+                                                entries.add(new PieEntry(negative, "Negative"));
+                                                int subjectivityScoreBar = (int) Math.round(subjectivityScore * 100);
+//                                                pieChart.setCenterText(reviewCount + " Reviews");
+                                                pieChart.setCenterText("Percentage of Reviews");
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                                    subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                                }
+                                                tvSubjectivity.setText("Subjectivity: " + subjectivityScoreBar + "%");
+                                            }
+                                            PieDataSet pieDataSet= new PieDataSet(entries, "Reviews");
+                                            PieData pieData= new PieData(pieDataSet);
+                                            Highlight h = new Highlight(0, 0, 0); // dataset index for piechart is always 0
+                                            pieData.setValueTextColor(Color.LTGRAY);
+                                            pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                                            pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                                            pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                                            pieDataSet.setValueLineColor(Color.LTGRAY);
+                                            pieDataSet.setValueLinePart1OffsetPercentage(80.f);
+                                            pieDataSet.setValueLinePart1Length(0.2f);
+                                            pieDataSet.setValueLinePart2Length(0.4f);
+                                            pieChart.highlightValues(new Highlight[]{h});
+                                            pieChart.getDescription().setEnabled(false);
+                                            pieChart.getLegend().setTextColor(Color.LTGRAY);
+                                            pieChart.setData(pieData);
+                                            pieChart.invalidate();
                                         }
-                                        tvSubjectivity.setText("Subjectivity: " + subjectivityScoreBar + "%");
                                     }
-                                    PieDataSet dataSet = new PieDataSet(entries, "Reviews");
-                                    PieData data = new PieData(dataSet);
-                                    Highlight h = new Highlight(0, 0, 0); // dataset index for piechart is always 0
-                                    pieChart.highlightValues(new Highlight[]{h});
-                                    pieChart.getDescription().setEnabled(false);
-                                    dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-                                    dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-                                    dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-                                    data.setValueTextColor(Color.LTGRAY);
-                                    dataSet.setValueLineColor(Color.LTGRAY);
-                                    dataSet.setValueLinePart1OffsetPercentage(80.f);
-                                    dataSet.setValueLinePart1Length(0.2f);
-                                    dataSet.setValueLinePart2Length(0.4f);
-                                    pieChart.getLegend().setTextColor(Color.LTGRAY);
-                                    pieChart.setData(data);
-                                    pieChart.invalidate();
                                 }
 
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Timber.e(String.valueOf(databaseError));
+                                }
+                            });
+                            //To avoid infowindow not showing up
+                            //return false
                             return false;
                         }
                     });

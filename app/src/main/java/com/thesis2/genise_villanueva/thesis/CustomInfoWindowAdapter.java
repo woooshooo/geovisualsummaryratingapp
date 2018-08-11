@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,7 +95,7 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
         });
 
         btn_review.setOnClickListener((View view1) -> {
-            Toast.makeText(mContext, "Showing reviews of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Showing reviews of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
             AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
             dialog.setTitle(title);
             dialog.setCancelable(false);
@@ -111,17 +110,12 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
                 });
                 builderInner.show();
             });
-            dialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int position) {
-                    dialog.dismiss();
-                }
-            });
+            dialog.setNegativeButton("cancel", (dialog1, position) -> dialog1.dismiss());
             dialog.show();
         });
 
         btn_info.setOnClickListener((View view12) -> {
-            Toast.makeText(mContext, "Showing info of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Showing info of " + marker.getTitle(), Toast.LENGTH_SHORT).show();
             marker.hideInfoWindow();
             showDialogBox();
         });
