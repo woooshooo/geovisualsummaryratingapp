@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_weight=".27"
         mapbox:mapbox_cameraZoom="11"
-        mapbox:mapbox_cameraZoomMax="13"
+        mapbox:mapbox_cameraZoomMax="15"
         mapbox:mapbox_cameraZoomMin="10"
         mapbox:mapbox_styleUrl="@string/mapbox_style_dark"
         mapbox:mapbox_uiDoubleTapGestures="false"
@@ -25,12 +25,14 @@
             android:id="@+id/btn_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="10dp"
             android:clickable="true"
             android:focusable="true"
-            mapbox:backgroundTint="?attr/colorButtonNormal"
-            mapbox:srcCompat="@android:color/darker_gray"
-            android:layout_margin="10dp"
-            android:layout_gravity="end" />
+            mapbox:backgroundTint="?attr/colorBackgroundFloating"
+            mapbox:elevation="0dp"
+            mapbox:rippleColor="?attr/colorButtonNormal"
+            mapbox:srcCompat="@mipmap/center_icon" />
 
         <ProgressBar
             android:id="@+id/subjectivityBar"

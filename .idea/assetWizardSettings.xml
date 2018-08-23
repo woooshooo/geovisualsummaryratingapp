@@ -35,7 +35,6 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="imageAsset" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\green_pin_marker_light-web.png" />
-                                      <entry key="theme" value="CUSTOM" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -85,13 +84,12 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\green_pin_marker-dark.png" />
-                                      <entry key="backgroundLayerName" value="green_pin_bg" />
-                                      <entry key="foregroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\green_pin_marker-web.png" />
-                                      <entry key="foregroundLayerName" value="green_pin_fg" />
-                                      <entry key="legacyIconShape" value="NONE" />
-                                      <entry key="outputName" value="green_pin_marker" />
-                                      <entry key="previewDensity" value="HIGH" />
-                                      <entry key="webIconShape" value="NONE" />
+                                      <entry key="backgroundLayerName" value="center_icon_bg" />
+                                      <entry key="foregroundImage" value="C:\Users\Kyle\Pictures\center icon.png" />
+                                      <entry key="foregroundLayerName" value="center_icon_fg" />
+                                      <entry key="legacyIconShape" value="CIRCLE" />
+                                      <entry key="outputName" value="center_icon" />
+                                      <entry key="webIconShape" value="CIRCLE" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -118,7 +116,6 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="iconShape" value="NONE" />
                                       <entry key="imageAsset" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\green_pin_marker_light-web.png" />
                                       <entry key="outputName" value="green_pin_marker_light" />
                                     </map>

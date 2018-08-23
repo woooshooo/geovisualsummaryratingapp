@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
 //            firebaseController.removeReviewsfromFirebase();
             x++;
         }
-        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
-//        Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
+//        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
+        Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
         setContentView(R.layout.activity_main);
         pieChart = findViewById(R.id.pieChart);
         pieChart.setTransparentCircleRadius(10);
