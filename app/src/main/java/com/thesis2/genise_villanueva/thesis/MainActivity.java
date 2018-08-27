@@ -50,18 +50,24 @@ public class MainActivity extends AppCompatActivity {
     private MapView mapView;
     private PieChart pieChart;
     private FloatingActionButton btn_center;
+    private FloatingActionButton btn_top;
     private TextView tvSubjectivity;
     private ProgressBar subjectivityBar;
     private Mapbox mapBox;
     private AssetsController assetsController;
     private ListView reviewList;
     private boolean doubleBackToExitPressedOnce = false;
-
+    private boolean topTenPressed = false;
+    //MARKERS
+    List<MarkerOptions> markerOptionsList = new ArrayList<>();
+    MarkerOptions markerOptions = new MarkerOptions();
+    List<Marker> markerList = new ArrayList<>();
+    List<Marker> toptenList = new ArrayList<>();
+    Marker newMarker = new Marker(markerOptions);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         assetsController = new AssetsController(MainActivity.this);
         FirebaseController firebaseController = new FirebaseController(MainActivity.this, savedInstanceState);
         firebaseController.initializeDB();
@@ -93,11 +99,14 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setRotationEnabled(true);
         mapView = findViewById(R.id.mapView);
         btn_center = findViewById(R.id.btn_center);
+        btn_top = findViewById(R.id.btn_top);
         tvSubjectivity = findViewById(R.id.tvSubjectivity);
         subjectivityBar = findViewById(R.id.subjectivityBar);
         reviewList = findViewById(R.id.reviewList);
 
         mapView.onCreate(savedInstanceState);
+
+
 
         if (Mapbox.isConnected()) {
             Log.d(TAG, "onCreate: isConnected to Mapbox");
@@ -121,6 +130,112 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
+                    // top ten button
+                    btn_top.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(!topTenPressed){
+                                Toast.makeText(MainActivity.this, "Show Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
+                                topTenPressed = true;
+                                for (int x = 0; markerList.size() > x; x++){
+                                    mapboxMap.removeMarker(markerList.get(x));
+                                }
+                                //adding top markers from firebase
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                                Query query = reference.child("data").orderByChild("location");
+                                query.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                                Data data = ds.getValue(Data.class);
+                                                assert data != null;
+                                                String loc = data.getLocation();
+                                                Coordinates coordinates = data.getCoordinates();
+                                                double lat = coordinates.getLatitude();
+                                                double lng = coordinates.getLongtitude();
+                                                LatLng newLatLng = new LatLng(lat, lng);
+                                                markerOptions.position(newLatLng);
+                                                SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                                int reviewCount = sentimentInfo.getReviewcount();
+                                                int positive = sentimentInfo.getPositive();
+                                                int negative = sentimentInfo.getNegative();
+                                                double subjectivity = sentimentInfo.getSubjectivityscoreaverage();
+                                                LocationInfo locationInfo = data.getLocationInfo();
+                                                markerOptions.title(loc);
+                                                markerOptionsList.add(markerOptions);
+                                                if (    reviewCount > 100
+                                                        && Double.parseDouble(locationInfo.getRating()) >= 4.0
+                                                        && subjectivity >= .40
+                                                        && positive > 80    ){
+                                                    mapboxMap.addMarker(markerOptions);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        Timber.e(String.valueOf(databaseError));
+                                    }
+                                });
+                            } else {
+                                for (int x = 0; markerList.size() > x; x++){
+                                    mapboxMap.removeMarker(markerList.get(x));
+                                }
+                                markerList.clear();
+                                Toast.makeText(MainActivity.this, "Hide Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
+                                topTenPressed = false;
+                                //adding markers from firebase
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                                Query query = reference.child("data").orderByChild("location");
+                                query.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                                Data data = ds.getValue(Data.class);
+                                                assert data != null;
+                                                String loc = data.getLocation();
+                                                Coordinates coordinates = data.getCoordinates();
+                                                double lat = coordinates.getLatitude();
+                                                double lng = coordinates.getLongtitude();
+                                                LatLng newLatLng = new LatLng(lat, lng);
+                                                markerOptions.position(newLatLng);
+                                                SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                                int reviewCount = sentimentInfo.getReviewcount();
+                                                int positive = sentimentInfo.getPositive();
+                                                int negative = sentimentInfo.getNegative();
+                                                double perc = Math.round((((double) positive) / reviewCount) * 100);
+                                                if (positive > negative) {
+                                                    markerOptions.icon(darkIcon);
+                                                    if (perc >= 90) {
+                                                        markerOptions.icon(darkIcon);
+                                                    } else if (perc >= 70 && perc <= 80) {
+                                                        markerOptions.icon(normalIcon);
+                                                    } else if (perc > 50 && perc < 71) {
+                                                        markerOptions.icon(lightIcon);
+                                                    } else {
+                                                        Timber.d("perc below 50");
+                                                    }
+                                                } else {
+                                                    Timber.d("negative greater than positive");
+                                                }
+                                                markerOptions.title(loc);
+                                                markerOptionsList.add(markerOptions);
+                                                newMarker = mapboxMap.addMarker(markerOptions);
+                                                markerList.add(newMarker);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        Timber.e(String.valueOf(databaseError));
+                                    }
+                                });
+                            }
+                        }
+                    });
                     //adding markers from firebase
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
                     Query query = reference.child("data").orderByChild("location");
@@ -128,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){
-                                MarkerOptions markerOptions = new MarkerOptions();
                                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                                     Data data = ds.getValue(Data.class);
                                     assert data != null;
@@ -158,7 +272,10 @@ public class MainActivity extends AppCompatActivity {
                                         Timber.d("negative greater than positive");
                                     }
                                     markerOptions.title(loc);
-                                    mapboxMap.addMarker(markerOptions);
+                                    markerOptionsList.add(markerOptions);
+                                    newMarker = mapboxMap.addMarker(markerOptions);
+                                    markerList.add(newMarker);
+
                                 }
                             }
                             LatLng center = new LatLng(7.0910885, 125.6112563);

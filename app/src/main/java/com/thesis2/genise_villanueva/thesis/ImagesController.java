@@ -114,7 +114,7 @@ public class ImagesController {
             imageButton1.setImageResource(bemwa[0]);
             imageButton2.setImageResource(bemwa[1]);
         }
-        if (title.contains("Bluejaz")){
+        if (title.contains("BlueJaz")){
             imageButton1.setImageResource(bluejaz[0]);
             imageButton2.setImageResource(bluejaz[1]);
         }
@@ -162,7 +162,7 @@ public class ImagesController {
             imageButton1.setImageResource(gmallthepeak[0]);
             imageButton2.setImageResource(gmallthepeak[1]);
         }
-        if (title.contains("GMALL")){
+        if (title.equalsIgnoreCase("GMALL")){
             imageButton1.setImageResource(gmall[0]);
             imageButton2.setImageResource(gmall[1]);
         }

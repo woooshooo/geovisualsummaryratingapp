@@ -21,18 +21,55 @@
         mapbox:mapbox_uiDoubleTapGestures="false"
         mapbox:mapbox_uiRotateGestures="false">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_center"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:layout_margin="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            mapbox:backgroundTint="?attr/colorBackgroundFloating"
-            mapbox:elevation="0dp"
-            mapbox:rippleColor="?attr/colorButtonNormal"
-            mapbox:srcCompat="@mipmap/center_icon" />
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/spacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_weight="1"
+                android:layout_margin="10dp">
+
+            </Button>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:layout_weight="0"
+                android:clickable="true"
+                android:focusable="true"
+                mapbox:backgroundTint="?attr/colorBackgroundFloating"
+                mapbox:elevation="0dp"
+                mapbox:fabSize="auto"
+                mapbox:rippleColor="?attr/colorButtonNormal"
+                mapbox:useCompatPadding="true" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:layout_weight="0"
+                android:clickable="true"
+                android:focusable="true"
+                mapbox:backgroundTint="?attr/colorBackgroundFloating"
+                mapbox:elevation="0dp"
+                mapbox:fabSize="auto"
+                mapbox:rippleColor="?attr/colorButtonNormal"
+                mapbox:srcCompat="@mipmap/center_icon"
+                mapbox:useCompatPadding="true" />
+
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/subjectivityBar"
