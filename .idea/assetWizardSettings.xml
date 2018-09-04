@@ -73,6 +73,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+                                                <entry key="scalingPercent" value="150" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -84,12 +85,12 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\green_pin_marker-dark.png" />
-                                      <entry key="backgroundLayerName" value="center_icon_bg" />
-                                      <entry key="foregroundImage" value="C:\Users\Kyle\Pictures\center icon.png" />
-                                      <entry key="foregroundLayerName" value="center_icon_fg" />
-                                      <entry key="legacyIconShape" value="CIRCLE" />
-                                      <entry key="outputName" value="center_icon" />
-                                      <entry key="webIconShape" value="CIRCLE" />
+                                      <entry key="backgroundLayerName" value="top_icon_bg" />
+                                      <entry key="foregroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\showicon.png" />
+                                      <entry key="foregroundLayerName" value="top_icon_fg" />
+                                      <entry key="legacyIconShape" value="NONE" />
+                                      <entry key="outputName" value="top_places_icon" />
+                                      <entry key="webIconShape" value="NONE" />
                                     </map>
                                   </option>
                                 </PersistentState>

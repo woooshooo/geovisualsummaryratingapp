@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -38,6 +39,10 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.wooplr.spotlight.SpotlightConfig;
+import com.wooplr.spotlight.SpotlightView;
+import com.wooplr.spotlight.prefs.PreferencesManager;
+import com.wooplr.spotlight.utils.SpotlightSequence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private ListView reviewList;
     private boolean doubleBackToExitPressedOnce = false;
     private boolean topTenPressed = false;
+    private SpotlightView spotlightViewCenter;
+    private SpotlightView spotlightViewTop;
+    PreferencesManager mPreferencesManager;
     //MARKERS
     List<MarkerOptions> markerOptionsList = new ArrayList<>();
     MarkerOptions markerOptions = new MarkerOptions();
@@ -71,15 +79,25 @@ public class MainActivity extends AppCompatActivity {
         assetsController = new AssetsController(MainActivity.this);
         FirebaseController firebaseController = new FirebaseController(MainActivity.this, savedInstanceState);
         firebaseController.initializeDB();
+        mPreferencesManager = new PreferencesManager(MainActivity.this);
+        mPreferencesManager.resetAll();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+
+        //Display Screen width and height
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int screenWidth = displaymetrics.widthPixels;
+        int screenHeight = displaymetrics.heightPixels;
+
         //TEST ON ADDING REVIEWS
-        int x = 0;
-        if (x == 0) {
+//        int x = 0;
+//        if (x == 0) {
 //            firebaseController.writeDatastoFirebase();
 //            firebaseController.writeReviewstoFirebase();
 //            firebaseController.removeReviewsfromFirebase();
-            x++;
-        }
+//            x++;
+//        }
 //        Mapbox.getInstance(this, String.valueOf(R.string.access_token));
+
         Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
         setContentView(R.layout.activity_main);
         pieChart = findViewById(R.id.pieChart);
@@ -106,14 +124,42 @@ public class MainActivity extends AppCompatActivity {
 
         mapView.onCreate(savedInstanceState);
 
-
-
         if (Mapbox.isConnected()) {
             Log.d(TAG, "onCreate: isConnected to Mapbox");
             mapView.getMapAsync(new OnMapReadyCallback() {
+                @SuppressLint("ClickableViewAccessibility")
                 @Override
                 public void onMapReady(MapboxMap mapboxMap) {
                     mapboxMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
+
+                    //Tutorial for Center and Recommended Places
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            SpotlightConfig spotlightConfig = new SpotlightConfig();
+                            spotlightConfig.setIntroAnimationDuration(400);
+                            spotlightConfig.setRevealAnimationEnabled(true);
+                            spotlightConfig.setPerformClick(true);
+                            spotlightConfig.setFadingTextDuration(400);
+                            spotlightConfig.setHeadingTvColor(Color.parseColor("#ada8a8"));
+                            spotlightConfig.setHeadingTvSize(32);
+                            spotlightConfig.setSubHeadingTvColor(Color.parseColor("#ffffff"));
+                            spotlightConfig.setSubHeadingTvSize(16);
+                            spotlightConfig.setMaskColor(Color.parseColor("#dc000000"));
+                            spotlightConfig.setLineAnimationDuration(400);
+                            spotlightConfig.setLineAndArcColor(Color.parseColor("#807989"));
+                            spotlightConfig.setDismissOnTouch(true);
+                            spotlightConfig.setDismissOnBackpress(true);
+                            spotlightConfig.setShowTargetArc(true);
+                            spotlightConfig.setRevealAnimationEnabled(true);
+                            SpotlightSequence.getInstance(MainActivity.this,spotlightConfig)
+                                    .addSpotlight(btn_center, "Back to Center", "Press this button if you wish\nto go back the center", "centerbtn_id")
+                                    .addSpotlight(btn_top, "Recommended Places", "Press this button if you wish\nto view only the recommended places.", "topbtn_id")
+                                    .startSequence();
+                        }
+                    });
+
+
                     // Customize map with markers, polylines, etc.
                     // Create an Icon object for the marker to use
                     IconFactory iconFactory = IconFactory.getInstance(MainActivity.this);
@@ -127,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             LatLng center = new LatLng(7.0910885, 125.6112563);
                             mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
+
                         }
                     });
 
@@ -134,8 +181,10 @@ public class MainActivity extends AppCompatActivity {
                     btn_top.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+
                             if(!topTenPressed){
-                                Toast.makeText(MainActivity.this, "Show Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this, "Show Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "On Top Button Click: "+ topTenPressed);
                                 topTenPressed = true;
                                 for (int x = 0; markerList.size() > x; x++){
                                     mapboxMap.removeMarker(markerList.get(x));
@@ -166,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
                                                 markerOptionsList.add(markerOptions);
                                                 if (    reviewCount > 100
                                                         && Double.parseDouble(locationInfo.getRating()) >= 4.0
-                                                        && subjectivity >= .40
-                                                        && positive > 80    ){
+                                                        && subjectivity < .50
+                                                        && positive > 100    ){
                                                     mapboxMap.addMarker(markerOptions);
                                                 }
                                             }
@@ -183,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                                     mapboxMap.removeMarker(markerList.get(x));
                                 }
                                 markerList.clear();
-                                Toast.makeText(MainActivity.this, "Hide Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this, "Hide Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
                                 topTenPressed = false;
                                 //adding markers from firebase
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -212,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                                                         markerOptions.icon(darkIcon);
                                                     } else if (perc >= 70 && perc <= 80) {
                                                         markerOptions.icon(normalIcon);
-                                                    } else if (perc > 50 && perc < 71) {
+                                                    } else if (perc > 50 && perc < 70) {
                                                         markerOptions.icon(lightIcon);
                                                     } else {
                                                         Timber.d("perc below 50");
@@ -236,58 +285,63 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
-                    //adding markers from firebase
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                    Query query = reference.child("data").orderByChild("location");
-                    query.addValueEventListener(new ValueEventListener() {
+
+                    new Handler().post(new Runnable() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()){
-                                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                                    Data data = ds.getValue(Data.class);
-                                    assert data != null;
-                                    String loc = data.getLocation();
-                                    Coordinates coordinates = data.getCoordinates();
-                                    double lat = coordinates.getLatitude();
-                                    double lng = coordinates.getLongtitude();
-                                    LatLng newLatLng = new LatLng(lat, lng);
-                                    markerOptions.position(newLatLng);
-                                    SentimentInfo sentimentInfo = data.getSentimentInfo();
-                                    int reviewCount = sentimentInfo.getReviewcount();
-                                    int positive = sentimentInfo.getPositive();
-                                    int negative = sentimentInfo.getNegative();
-                                    double perc = Math.round((((double) positive) / reviewCount) * 100);
-                                    if (positive > negative) {
-                                        markerOptions.icon(darkIcon);
-                                        if (perc >= 90) {
-                                            markerOptions.icon(darkIcon);
-                                        } else if (perc >= 70 && perc <= 80) {
-                                            markerOptions.icon(normalIcon);
-                                        } else if (perc > 50 && perc < 71) {
-                                            markerOptions.icon(lightIcon);
-                                        } else {
-                                            Timber.d("perc below 50");
+                        public void run() {
+                            //adding markers from firebase
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                            Query query = reference.child("data").orderByChild("location");
+                            query.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()){
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                            Data data = ds.getValue(Data.class);
+                                            assert data != null;
+                                            String loc = data.getLocation();
+                                            Coordinates coordinates = data.getCoordinates();
+                                            double lat = coordinates.getLatitude();
+                                            double lng = coordinates.getLongtitude();
+                                            LatLng newLatLng = new LatLng(lat, lng);
+                                            markerOptions.position(newLatLng);
+                                            SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                            int reviewCount = sentimentInfo.getReviewcount();
+                                            int positive = sentimentInfo.getPositive();
+                                            int negative = sentimentInfo.getNegative();
+                                            double perc = Math.round((((double) positive) / reviewCount) * 100);
+                                            if (positive > negative) {
+                                                markerOptions.icon(darkIcon);
+                                                if (perc >= 90) {
+                                                    markerOptions.icon(darkIcon);
+                                                } else if (perc >= 70 && perc <= 80) {
+                                                    markerOptions.icon(normalIcon);
+                                                } else if (perc > 50 && perc < 71) {
+                                                    markerOptions.icon(lightIcon);
+                                                } else {
+                                                    Timber.d("perc below 50");
+                                                }
+                                            } else {
+                                                Timber.d("negative greater than positive");
+                                            }
+                                            markerOptions.title(loc);
+                                            markerOptionsList.add(markerOptions);
+                                            newMarker = mapboxMap.addMarker(markerOptions);
+                                            markerList.add(newMarker);
+
                                         }
-                                    } else {
-                                        Timber.d("negative greater than positive");
                                     }
-                                    markerOptions.title(loc);
-                                    markerOptionsList.add(markerOptions);
-                                    newMarker = mapboxMap.addMarker(markerOptions);
-                                    markerList.add(newMarker);
-
+                                    LatLng center = new LatLng(7.0910885, 125.6112563);
+                                    mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
                                 }
-                            }
-                            LatLng center = new LatLng(7.0910885, 125.6112563);
-                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Timber.e(String.valueOf(databaseError));
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Timber.e(String.valueOf(databaseError));
+                                }
+                            });
                         }
                     });
-
 
                     mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
                         @Override
@@ -363,6 +417,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Timber.e("onCreate: !isConnect to Mapbox");
         }
+
+
     }
 
 

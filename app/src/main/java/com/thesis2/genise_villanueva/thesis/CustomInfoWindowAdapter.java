@@ -167,7 +167,14 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
                         assert data != null;
                         if (data.getLocation().equals(title)){
                             LocationInfo locationInfo = data.getLocationInfo();
-                            msg.setText("Address: "+ locationInfo.getAddress()+ " \nWebsite: "+locationInfo.getWebsite()+"\nContact: "+locationInfo.getContactno()+"\nRating: "+locationInfo.getRating());
+                            String newRating;
+
+                            if (Double.parseDouble(locationInfo.getRating()) > 5.1){
+                                newRating = String.valueOf(Double.parseDouble(locationInfo.getRating()) / 2);
+                            } else {
+                                newRating = locationInfo.getRating();
+                            }
+                            msg.setText("Address: "+ locationInfo.getAddress()+ " \nWebsite: "+locationInfo.getWebsite()+"\nContact: "+locationInfo.getContactno()+"\nRating: "+newRating);
                         }
                     }
                 }

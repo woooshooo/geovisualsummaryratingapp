@@ -51,6 +51,7 @@
                 mapbox:elevation="0dp"
                 mapbox:fabSize="auto"
                 mapbox:rippleColor="?attr/colorButtonNormal"
+                mapbox:srcCompat="@mipmap/top_places_icon"
                 mapbox:useCompatPadding="true" />
 
             <android.support.design.widget.FloatingActionButton

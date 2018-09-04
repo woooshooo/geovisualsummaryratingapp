@@ -60,6 +60,9 @@ dependencies {
 
     //zoomer
     implementation 'com.vatsal.imagezoomer:image-zoomer:1.0.2'
+
+    //spotlight for tutorial
+    implementation 'com.github.wooplr:Spotlight:1.2.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
