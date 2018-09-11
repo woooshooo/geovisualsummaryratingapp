@@ -28,15 +28,16 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <Button
-                android:id="@+id/spacing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:layout_margin="10dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp" />
 
-            </Button>
+
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_top"

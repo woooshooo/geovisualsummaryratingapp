@@ -50,6 +50,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //MapBox
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.3.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-offline:0.2.0'
 
     //Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'

@@ -13,6 +13,7 @@ import com.vatsal.imagezoomer.ZoomAnimation;
 public class ImagesController {
     private static final String TAG = "ImagesController";
     private Context mContext;
+    //tripadvisor
     private int abreeza[] = new int[]{R.drawable.abreeza_0,R.drawable.abreeza_1};
     private int aldevinco[] = new int[]{R.drawable.aldevinco_0,R.drawable.aldevinco_1};
     private int bankerohan[] = new int[]{R.drawable.bangkerohan_0,R.drawable.bangkerohan_1};
@@ -69,6 +70,27 @@ public class ImagesController {
     private int vanishing[] = new int[]{R.drawable.vanishing_0,R.drawable.vanishing_1};
     private int zipcity[] = new int[]{R.drawable.zipcity_0,R.drawable.zipcity_1};
     private int zorb[] = new int[]{R.drawable.zorb_0,R.drawable.zorb_1};
+    //agoda
+    private int balibali[] = new int[]{R.drawable.balibali_0,R.drawable.balibali_1};
+    private int campHoliday[] = new int[]{R.drawable.campholiday_0,R.drawable.campholiday_1};
+    private int chemas[] = new int[]{R.drawable.chemasbythesea_0,R.drawable.chemasbythesea_1};
+    private int crown[] = new int[]{R.drawable.crownregency_0,R.drawable.crownregency_1};
+    private int grandmenseng[] = new int[]{R.drawable.grandmenseng_0,R.drawable.grandmenseng_1};
+    private int grandregal[] = new int[]{R.drawable.grandregal_0,R.drawable.grandregal_1};
+    private int hofGorei[] = new int[]{R.drawable.hofgorei_0,R.drawable.hofgorei_1};
+    private int paradiseIsland[] = new int[]{R.drawable.paradiseisland_0,R.drawable.paradiseisland_1};
+    private int parkInn[] = new int[]{R.drawable.parkinn_0,R.drawable.parkinn_1};
+    private int puntadelsol[] = new int[]{R.drawable.puntadelsol_0,R.drawable.puntadelsol_1};
+    private int redknights[] = new int[]{R.drawable.redknights_0,R.drawable.redknights_1};
+    private int redplanet[] = new int[]{R.drawable.redplanet_0,R.drawable.redplanet_1};
+    private int seda[] = new int[]{R.drawable.sedaabreeza_0,R.drawable.sedaabreeza_1};
+    private int apoview[] = new int[]{R.drawable.theapoview_0,R.drawable.theapoview_1};
+    private int marcopolo[] = new int[]{R.drawable.themarcopolo_0,R.drawable.themarcopolo_1};
+    private int pinnacle[] = new int[]{R.drawable.thepinnacle_0,R.drawable.thepinnacle_1};
+    private int royalmandaya[] = new int[]{R.drawable.theroyalmandaya_0,R.drawable.theroyalmandaya_1};
+    private int strandhotel[] = new int[]{R.drawable.thestrandhotel_0,R.drawable.thestrandhotel_1};
+    private int urbanlivingzen[] = new int[]{R.drawable.urbanlivingzen_0,R.drawable.urbanlivingzen_1};
+    private int waterfront[] = new int[]{R.drawable.waterfront_0,R.drawable.waterfront_1};
 
     String title;
     TextView tvTitle;
@@ -97,7 +119,7 @@ public class ImagesController {
             zoomAnimation.zoom(view12, duration);
             return false;
         });
-
+        //tripadvisor
         if (title.contains("Abreeza")){
             imageButton1.setImageResource(abreeza[0]);
             imageButton2.setImageResource(abreeza[1]);
@@ -321,6 +343,87 @@ public class ImagesController {
         if (title.contains("Zorb")){
             imageButton1.setImageResource(zorb[0]);
             imageButton2.setImageResource(zorb[1]);
+        }
+        //Agoda
+        if (title.contains("Bali Bali Beach Resort")){
+            imageButton1.setImageResource(balibali[0]);
+            imageButton2.setImageResource(balibali[1]);
+        }
+        if (title.contains("Camp Holiday Resort")){
+            imageButton1.setImageResource(campHoliday[0]);
+            imageButton2.setImageResource(campHoliday[1]);
+        }
+        if (title.contains("Chemas by the Sea Resort")){
+            imageButton1.setImageResource(chemas[0]);
+            imageButton2.setImageResource(chemas[1]);
+        }
+        if (title.contains("Crown Regency Residences")){
+            imageButton1.setImageResource(crown[0]);
+            imageButton2.setImageResource(crown[1]);
+        }
+        if (title.contains("Grand Men Seng Hotel")){
+            imageButton1.setImageResource(grandmenseng[0]);
+            imageButton2.setImageResource(grandmenseng[1]);
+        }
+        if (title.contains("Grand Regal Hotel")){
+            imageButton1.setImageResource(grandregal[0]);
+            imageButton2.setImageResource(grandregal[1]);
+        }
+        if (title.contains("Hof Gorei Beach Resort")){
+            imageButton1.setImageResource(hofGorei[0]);
+            imageButton2.setImageResource(hofGorei[1]);
+        }
+        if (title.contains("Paradise Island Park & Beach Resort")){
+            imageButton1.setImageResource(paradiseIsland[0]);
+            imageButton2.setImageResource(paradiseIsland[1]);
+        }
+        if (title.contains("Park Inn by Radisson")){
+            imageButton1.setImageResource(parkInn[0]);
+            imageButton2.setImageResource(parkInn[1]);
+        }
+        if (title.contains("Punta Del Sol Beach Resort")){
+            imageButton1.setImageResource(puntadelsol[0]);
+            imageButton2.setImageResource(puntadelsol[1]);
+        }
+        if (title.contains("Red Knight Gardens Apartelle")){
+            imageButton1.setImageResource(redknights[0]);
+            imageButton2.setImageResource(redknights[1]);
+        }
+        if (title.contains("Red Planet")){
+            imageButton1.setImageResource(redplanet[0]);
+            imageButton2.setImageResource(redplanet[1]);
+        }
+        if (title.contains("Seda Abreeza Davao")){
+            imageButton1.setImageResource(seda[0]);
+            imageButton2.setImageResource(seda[1]);
+        }
+        if (title.contains("The Apo View Hotel")){
+            imageButton1.setImageResource(apoview[0]);
+            imageButton2.setImageResource(apoview[1]);
+        }
+        if (title.contains("The Marco Polo Hotel")){
+            imageButton1.setImageResource(marcopolo[0]);
+            imageButton2.setImageResource(marcopolo[1]);
+        }
+        if (title.contains("The Pinnacle Hotel and Suites")){
+            imageButton1.setImageResource(pinnacle[0]);
+            imageButton2.setImageResource(pinnacle[1]);
+        }
+        if (title.contains("The Royal Mandaya Hotel")){
+            imageButton1.setImageResource(royalmandaya[0]);
+            imageButton2.setImageResource(royalmandaya[1]);
+        }
+        if (title.contains("The Strand Suites and Dormitel")){
+            imageButton1.setImageResource(strandhotel[0]);
+            imageButton2.setImageResource(strandhotel[1]);
+        }
+        if (title.contains("Urban Living Zen Hotel")){
+            imageButton1.setImageResource(urbanlivingzen[0]);
+            imageButton2.setImageResource(urbanlivingzen[1]);
+        }
+        if (title.contains("Waterfront Insular Hotel")){
+            imageButton1.setImageResource(waterfront[0]);
+            imageButton2.setImageResource(waterfront[1]);
         }
 
     }

@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -169,19 +170,19 @@ public class FirebaseController {
         String[] files;
         String json;
         try {
-            files = assetManager.list("reviews");
+            files = assetManager.list("reviews2");
             for (String filename : files) {
                 Log.d(TAG, "Assets folder file: %s: " + filename);
                 JSONArray jsonArrayReview;
                 JSONObject jsonObjectReview;
                 try {
 //                    InputStream inputStream = mContext.getAssets().open(filename);
-                    InputStream inputStream = assetManager.open("reviews/" + filename);
+                    InputStream inputStream = assetManager.open("reviews2/" + filename);
                     int size = inputStream.available();
                     byte[] buffer = new byte[size];
                     inputStream.read(buffer);
                     inputStream.close();
-                    json = new String(buffer, "UTF-8");
+                    json = new String(buffer, StandardCharsets.UTF_8);
                     try {
                         jsonArrayReview = new JSONArray(json);
                         jsonObjectReview = new JSONObject();
@@ -226,7 +227,8 @@ public class FirebaseController {
     /**
      * Removing reviews in Firebase
      **/
-    public void removeReviewsfromFirebase(){
+    public void removeDATAfromFirebase(){
+        mDatabase = database.getReference("data");
         mDatabase.removeValue();
     }
 

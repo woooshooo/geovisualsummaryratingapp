@@ -73,7 +73,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="150" />
+                                                <entry key="scalingPercent" value="101" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -85,11 +85,11 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\green_pin_marker-dark.png" />
-                                      <entry key="backgroundLayerName" value="top_icon_bg" />
-                                      <entry key="foregroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\showicon.png" />
-                                      <entry key="foregroundLayerName" value="top_icon_fg" />
+                                      <entry key="backgroundLayerName" value="neutral_bg" />
+                                      <entry key="foregroundImage" value="C:\Users\Kyle\AndroidStudioProjects\Thesis\app\src\main\for neutral.png" />
+                                      <entry key="foregroundLayerName" value="neutral_fg" />
                                       <entry key="legacyIconShape" value="NONE" />
-                                      <entry key="outputName" value="top_places_icon" />
+                                      <entry key="outputName" value="neutral_marker" />
                                       <entry key="webIconShape" value="NONE" />
                                     </map>
                                   </option>
