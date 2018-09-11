@@ -63,6 +63,9 @@ dependencies {
 
     //spotlight for tutorial
     implementation 'com.github.wooplr:Spotlight:1.2.3'
+
+    //app intro
+    implementation 'com.github.apl-devs:appintro:v4.2.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
