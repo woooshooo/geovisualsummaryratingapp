@@ -38,7 +38,6 @@
                 android:layout_marginLeft="10dp" />
 
 
-
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_top"
                 android:layout_width="match_parent"
@@ -52,7 +51,7 @@
                 mapbox:elevation="0dp"
                 mapbox:fabSize="auto"
                 mapbox:rippleColor="?attr/colorButtonNormal"
-                mapbox:srcCompat="@mipmap/top_places_icon"
+                mapbox:srcCompat="@mipmap/top_icon_fg"
                 mapbox:useCompatPadding="true" />
 
             <android.support.design.widget.FloatingActionButton
@@ -68,7 +67,7 @@
                 mapbox:elevation="0dp"
                 mapbox:fabSize="auto"
                 mapbox:rippleColor="?attr/colorButtonNormal"
-                mapbox:srcCompat="@mipmap/center_icon"
+                mapbox:srcCompat="@mipmap/center_icon_fg"
                 mapbox:useCompatPadding="true" />
 
         </LinearLayout>
@@ -91,17 +90,21 @@
             android:text="Subjectivity"/>
     </com.mapbox.mapboxsdk.maps.MapView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".73">
-
-        <include
-            layout="@layout/layout_datalist"
+        <!--<include-->
+            <!--layout="@layout/layout_datalist"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="10dp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.vatsal.imagezoomer.ZoomAnimation;
 

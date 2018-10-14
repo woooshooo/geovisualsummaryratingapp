@@ -4,13 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,18 +20,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import timber.log.Timber;
 
 public class FirebaseController {
@@ -47,7 +44,7 @@ public class FirebaseController {
     // [END declare_database_ref]
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
-// ...
+//
 
     FirebaseController(Context context, Bundle bundle) {
         this.mContext = context;
@@ -55,7 +52,6 @@ public class FirebaseController {
         this.assetManager = mContext.getAssets();
         mAuth = FirebaseAuth.getInstance();
         assetsController = new AssetsController(context);
-
     }
 
     public void initializeDB() {
@@ -68,7 +64,6 @@ public class FirebaseController {
         }
         mDatabase.keepSynced(true);
         reviewsList = new ArrayList<>();
-
         // [END initialize_database_ref]
     }
 
@@ -145,18 +140,10 @@ public class FirebaseController {
                 assert data_id != null;
                 mDatabase = database.getReference("data");
                 mDatabase.child(data_id).setValue(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Timber.e("Data added: %s", data.getLocation());
-                                Toast.makeText(mContext, "Data added", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Timber.e(e, "Failure to add data: %s", data.toString());
-                    }
-                });
+                        .addOnSuccessListener(aVoid -> {
+                            Timber.e("Data added: %s", data.getLocation());
+                            Toast.makeText(mContext, "Data added", Toast.LENGTH_SHORT).show();
+                        }).addOnFailureListener(e -> Timber.e(e, "Failure to add data: %s", data.toString()));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -168,7 +155,7 @@ public class FirebaseController {
      **/
     public void writeReviewstoFirebase() {
         String[] files;
-        String json;
+        String json = null;
         try {
             files = assetManager.list("reviews2");
             for (String filename : files) {
@@ -182,7 +169,9 @@ public class FirebaseController {
                     byte[] buffer = new byte[size];
                     inputStream.read(buffer);
                     inputStream.close();
-                    json = new String(buffer, StandardCharsets.UTF_8);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        json = new String(buffer, StandardCharsets.UTF_8);
+                    }
                     try {
                         jsonArrayReview = new JSONArray(json);
                         jsonObjectReview = new JSONObject();

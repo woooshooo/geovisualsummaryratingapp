@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "899996313169",
+    "firebase_url": "https://thesis-219ce.firebaseio.com",
+    "project_id": "thesis-219ce",
+    "storage_bucket": "thesis-219ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899996313169:android:7fb70760437ebcaa",
+        "android_client_info": {
+          "package_name": "com.thesis2.genise_villanueva.thesis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899996313169-epv443pn0hfksnnssqg3frq4in80bdr6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thesis2.genise_villanueva.thesis",
+            "certificate_hash": "5023bba8b5488f950d37625cefe0d79de99776d8"
+          }
+        },
+        {
+          "client_id": "899996313169-lf5oaqlogetj0c8f9mgrkg5cphfrrg4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApizLjdaNA0ypgly5eXCix1Lg0bwol8cY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899996313169-lf5oaqlogetj0c8f9mgrkg5cphfrrg4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

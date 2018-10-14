@@ -8,7 +8,6 @@ public class Data {
     SentimentInfo sentimentInfo;
 
     Data(){
-
     }
 
     Data(String data_id, String location, Coordinates coordinates, LocationInfo locationInfo,SentimentInfo sentimentInfo) {

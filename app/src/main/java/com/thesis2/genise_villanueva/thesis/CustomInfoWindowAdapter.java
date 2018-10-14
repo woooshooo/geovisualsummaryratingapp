@@ -84,6 +84,7 @@ public class CustomInfoWindowAdapter implements MapboxMap.InfoWindowAdapter {
                     for (DataSnapshot review : dataSnapshot.getChildren()) {
                         Reviews reviews = review.getValue(Reviews.class);
                         reviewsArrayList.add(reviews);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }

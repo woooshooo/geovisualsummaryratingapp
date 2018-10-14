@@ -1,13 +1,20 @@
 package com.thesis2.genise_villanueva.thesis;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -36,6 +43,8 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.offline.OfflineManager;
 import com.mapbox.mapboxsdk.offline.OfflineRegion;
 import com.mapbox.mapboxsdk.offline.OfflineRegionError;
@@ -86,397 +95,429 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Initialize AssetsController
         assetsController = new AssetsController(MainActivity.this);
+        Log.d(TAG, "onCreate: AssetsController Initialized");
         //Initialize FirebaseController
         FirebaseController firebaseController = new FirebaseController(MainActivity.this, savedInstanceState);
         firebaseController.initializeDB();
+        Log.d(TAG, "onCreate: FirebaseController Initialized");
         //Set the preferences manager to resetAll for the instructions to open every app open
         mPreferencesManager = new PreferencesManager(MainActivity.this);
         mPreferencesManager.resetAll();
-
+        Log.d(TAG, "onCreate: PreferenceManager Reset Complete");
         //Call Mapbox API
         Mapbox.getInstance(this, "pk.eyJ1Ijoid2tiZ2VuaXNlIiwiYSI6ImNqampyMnF0ejBpMTAzd3BiemY0aTQ1dHUifQ.Y27Yy0ndTZSlEsDuNhpcuw");
         //Set Content View the Activity Layout
         setContentView(R.layout.activity_main);
         //Initialize pieChart
         pieChart = findViewById(R.id.pieChart);
-        //Setting pieChart settings
+        //Handler for Setting pieChart settings
         new Handler().post(() -> {
             pieChart.setTransparentCircleRadius(10);
             pieChart.setUsePercentValues(true);
-            pieChart.setCenterTextSize(14);
+            pieChart.setCenterTextSize(10);
             pieChart.setDrawCenterText(true);
             pieChart.setTransparentCircleRadius(50);
             pieChart.setCenterTextColor(Color.LTGRAY);
             pieChart.setEntryLabelColor(Color.LTGRAY);
             pieChart.setHoleColor(Color.TRANSPARENT);
-            pieChart.setMinimumWidth(500);
-            pieChart.setMinimumHeight(500);
+//            pieChart.setMinimumWidth(500);
+//            pieChart.setMinimumHeight(500);
             pieChart.setDrawHoleEnabled(true);
             pieChart.setHoleRadius(70);
             pieChart.setRotationAngle(0);
             pieChart.setRotationEnabled(true);
+            Log.d(TAG, "onCreate: pieChart Settings complete");
         });
+        
 
         //Initialize MainActivity Objects
         mapView = findViewById(R.id.mapView);
-        btn_center = findViewById(R.id.btn_center);
-        btn_top = findViewById(R.id.btn_top);
+        btn_center = (FloatingActionButton) findViewById(R.id.btn_center);
+        btn_top = (FloatingActionButton) findViewById(R.id.btn_top);
         tvSubjectivity = findViewById(R.id.tvSubjectivity);
         subjectivityBar = findViewById(R.id.subjectivityBar);
         reviewList = findViewById(R.id.reviewList);
         progressBar = findViewById(R.id.progressBar);
 
+
         //Set mapView on Create with savedInstanceState as the passed value
         mapView.onCreate(savedInstanceState);
 
-        //Create Mapbox Map Asynchronously
-        mapView.getMapAsync(mapboxMap -> {
-            //Set InfoWindowAdapter to the CustomInfoWindowAdapter
-            mapboxMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
-            //Set Lat Lng Boundary for Davao and Samal with appx 6000 tiles
-            // that follows the MapBox Tile estimator for the free plan
-            LatLngBounds latLngBounds = new LatLngBounds.Builder()
-                    .include(new LatLng(7.41170, 125.90793)) // Northeast
-                    .include(new LatLng(6.77990, 125.17280)) // Southwest
-                    .build();
-            mapboxMap.setLatLngBoundsForCameraTarget(latLngBounds);
-            // Set up the offlineManager
-            offlineManager = OfflineManager.getInstance(MainActivity.this);
-            // OfflineManager
+        //Setup Tutorial for Center and Recommended Places
+        new Handler().post(() -> {
+            //Initialize SpotlightConfig
+            SpotlightConfig spotlightConfig = new SpotlightConfig();
+            //Set settings for the interface design of the spotlight
             new Handler().post(() -> {
-                // Create offline definition using the current
-                // style and boundaries of visible map area
-                String styleUrl = mapboxMap.getStyleUrl();
-                // Create a bounding box for the offline region
+                spotlightConfig.setIntroAnimationDuration(400);
+                spotlightConfig.setRevealAnimationEnabled(true);
+                spotlightConfig.setPerformClick(true);
+                spotlightConfig.setFadingTextDuration(400);
+                spotlightConfig.setHeadingTvColor(Color.parseColor("#ada8a8"));
+                spotlightConfig.setHeadingTvSize(32);
+                spotlightConfig.setSubHeadingTvColor(Color.parseColor("#ffffff"));
+                spotlightConfig.setSubHeadingTvSize(16);
+                spotlightConfig.setMaskColor(Color.parseColor("#dc000000"));
+                spotlightConfig.setLineAnimationDuration(400);
+                spotlightConfig.setLineAndArcColor(Color.parseColor("#807989"));
+                spotlightConfig.setDismissOnTouch(true);
+                spotlightConfig.setDismissOnBackpress(true);
+                spotlightConfig.setShowTargetArc(true);
+                spotlightConfig.setRevealAnimationEnabled(true);
+                //Set up & Start SpotlightSequence
+                SpotlightSequence.getInstance(MainActivity.this, spotlightConfig)
+                        .addSpotlight(btn_center, "Back to Center", "Press this button if you wish\nto go back the center", "centerbtn_id")
+                        .addSpotlight(btn_top, "Recommended Places", "Press this button if you wish\nto view only the recommended places.", "topbtn_id")
+                        .startSequence();
+            });
+        });
 
-                double minZoom = mapboxMap.getCameraPosition().zoom;
-                double maxZoom = mapboxMap.getMaxZoomLevel();
-                float pixelRatio = MainActivity.this.getResources().getDisplayMetrics().density;
-                OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
-                        styleUrl, latLngBounds, minZoom, maxZoom, pixelRatio);
+        //Create Mapbox Map Asynchronously
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(MapboxMap mapboxMap) {
+                Timber.tag(TAG).d("onMapReader: isConnected");
+                //Set InfoWindowAdapter to the CustomInfoWindowAdapter
+                mapboxMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
+                //Set Lat Lng Boundary for Davao and Samal with appx 6000 tiles
+                // that follows the MapBox Tile estimator for the free plan
+                LatLngBounds latLngBounds = new LatLngBounds.Builder()
+                        .include(new LatLng(7.41170, 125.90793)) // Northeast
+                        .include(new LatLng(6.77990, 125.17280)) // Southwest
+                        .build();
+                mapboxMap.setLatLngBoundsForCameraTarget(latLngBounds);
 
-                // Build a JSONObject using the user-defined offline region title,
-                // convert it into string, and use it to create a metadata variable.
-                // The metadata variable will later be passed to createOfflineRegion()
-                byte[] metadata;
-                try {
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put(JSON_FIELD_REGION_NAME, "Davao");
-                    String json = jsonObject.toString();
-                    metadata = json.getBytes(JSON_CHARSET);
-                } catch (Exception exception) {
-                    Timber.tag(TAG).e("Failed to encode metadata: %s", exception.getMessage());
-                    metadata = null;
-                }
-
-                // Create the offline region and launch the download
-                assert metadata != null;
-                offlineManager.createOfflineRegion(definition, metadata, new OfflineManager.CreateOfflineRegionCallback() {
+                // On click listener for Center Button
+                btn_center.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCreate(OfflineRegion offlineRegion) {
-                        Timber.tag(TAG).d("Offline region created: Davao");
-                        MainActivity.this.offlineRegion = offlineRegion;
-                        offlineRegion.setDownloadState(OfflineRegion.STATE_ACTIVE);
-                        // Display the download progress bar
-                        progressBar = findViewById(R.id.progressBar);
-                        startProgress();
+                    public void onClick(View v) {
+                        try {
+                            Log.d(TAG, "center button");
+                            LatLng center = new LatLng(7.0910885, 125.6112563);
+                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
+                            Timber.d("Center: center button clicked!");
+                        } catch (Exception e) {
+                            Log.e(TAG, "center button: error", e);
+                        }
+                    }
+                });
 
-                        // Monitor the download progress using setObserver
-                        offlineRegion.setObserver(new OfflineRegion.OfflineRegionObserver() {
+                // Customize map with markers, polylines, etc.
+                // Create an Icon object for the marker to use
+                IconFactory iconFactory = IconFactory.getInstance(MainActivity.this);
+                Icon darkIcon = iconFactory.fromResource(R.drawable.green_pin_marker_dark);
+                Icon normalIcon = iconFactory.fromResource(R.drawable.green_pin_marker);
+                Icon lightIcon = iconFactory.fromResource(R.drawable.green_pin_marker_light);
+                Icon neutralIcon = iconFactory.fromResource(R.drawable.neutral_marker);
+
+                // On click listener for Recommended Places Button
+                btn_top.setOnClickListener(view -> {
+                    if (!topTenPressed) {
+                        Timber.tag(TAG).d("On Top Button Click: %s", topTenPressed);
+                        topTenPressed = true;
+                        for (int x1 = 0; markerList.size() > x1; x1++) {
+                            mapboxMap.removeMarker(markerList.get(x1)); //Deletes all markers
+                        }
+                        //adding top markers from firebase
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                        Query query = reference.child("data").orderByChild("location");
+                        query.addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onStatusChanged(OfflineRegionStatus status) {
-                                // Calculate the download percentage and update the progress bar
-                                double percentage = status.getRequiredResourceCount() >= 0
-                                        ? (100.0 * status.getCompletedResourceCount() / status.getRequiredResourceCount()) :
-                                        0.0;
-                                if (status.isComplete()) {
-                                    // End Progress on Download complete
-                                    endProgress();
-                                } else if (status.isRequiredResourceCountPrecise()) {
-                                    // Switch to determinate state
-                                    setPercentage((int) Math.round(percentage));
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        Data data = ds.getValue(Data.class);
+                                        assert data != null;
+                                        String loc = data.getLocation();
+                                        Coordinates coordinates = data.getCoordinates();
+                                        double lat = coordinates.getLatitude();
+                                        double lng = coordinates.getLongtitude();
+                                        LatLng newLatLng = new LatLng(lat, lng);
+                                        markerOptions.position(newLatLng);
+                                        SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                        int reviewCount = sentimentInfo.getReviewcount();
+                                        int positive = sentimentInfo.getPositive();
+                                        double subjectivity = sentimentInfo.getSubjectivityscoreaverage();
+                                        LocationInfo locationInfo = data.getLocationInfo();
+                                        markerOptions.title(loc);
+                                        markerOptionsList.add(markerOptions);
+                                        if (reviewCount > 100
+                                                && Double.parseDouble(locationInfo.getRating()) >= 4.0
+                                                && subjectivity < .50
+                                                && positive > 100) {
+                                            mapboxMap.addMarker(markerOptions);
+                                        }
+                                    }
                                 }
                             }
 
                             @Override
-                            public void onError(OfflineRegionError error) {
-                                // If an error occurs, print to logcat
-                                Timber.tag(TAG).e("onError reason: %s", error.getReason());
-                                Timber.tag(TAG).e("onError message: %s", error.getMessage());
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Timber.e(String.valueOf(databaseError));
+                            }
+                        });
+                    } else {
+                        for (int x1 = 0; markerList.size() > x1; x1++) {
+                            mapboxMap.removeMarker(markerList.get(x1));
+                        }
+                        markerList.clear();
+                        topTenPressed = false;
+                        //adding markers from firebase
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                        Query query = reference.child("data").orderByChild("location");
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        Data data = ds.getValue(Data.class);
+                                        assert data != null;
+                                        String loc = data.getLocation();
+                                        Coordinates coordinates = data.getCoordinates();
+                                        double lat = coordinates.getLatitude();
+                                        double lng = coordinates.getLongtitude();
+                                        LatLng newLatLng = new LatLng(lat, lng);
+                                        markerOptions.position(newLatLng);
+                                        SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                        int reviewCount = sentimentInfo.getReviewcount();
+                                        int positive = sentimentInfo.getPositive();
+                                        int negative = sentimentInfo.getNegative();
+                                        int neutral = sentimentInfo.getNeutral();
+                                        double perc = Math.round((((double) positive) / reviewCount) * 100);
+                                        if (neutral > positive || (neutral == positive && positive == negative)) {
+                                            markerOptions.icon(neutralIcon);
+                                        } else if (positive > negative) {
+                                            markerOptions.icon(darkIcon);
+                                            if (perc >= 90) {
+                                                markerOptions.icon(darkIcon);
+                                            } else if (perc >= 70 && perc <= 80) {
+                                                markerOptions.icon(normalIcon);
+                                            } else if (perc > 50 && perc < 71) {
+                                                markerOptions.icon(lightIcon);
+                                            } else {
+                                                Timber.d("perc below 50");
+                                            }
+                                        } else {
+                                            Timber.d("negative greater than positive");
+                                        }
+                                        markerOptions.title(loc);
+                                        markerOptionsList.add(markerOptions);
+                                        newMarker = mapboxMap.addMarker(markerOptions);
+                                        pieChart.invalidate();
+                                        markerList.add(newMarker);
+                                    }
+                                }
                             }
 
                             @Override
-                            public void mapboxTileCountLimitExceeded(long limit) {
-                                // Notify if offline region exceeds maximum tile count
-                                Timber.tag(TAG).e("Mapbox tile count limit exceeded: %s", limit);
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Timber.e(String.valueOf(databaseError));
                             }
                         });
                     }
-
-                    @Override
-                    public void onError(String error) {
-                        Timber.tag(TAG).e("Error: %s", error);
-                    }
-                });
-            });
-
-            //Setup Tutorial for Center and Recommended Places
-            new Handler().post(() -> {
-                //Initialize SpotlightConfig
-                SpotlightConfig spotlightConfig = new SpotlightConfig();
-                //Set settings for the interface design of the spotlight
-                new Handler().post(() -> {
-                    spotlightConfig.setIntroAnimationDuration(400);
-                    spotlightConfig.setRevealAnimationEnabled(true);
-                    spotlightConfig.setPerformClick(true);
-                    spotlightConfig.setFadingTextDuration(400);
-                    spotlightConfig.setHeadingTvColor(Color.parseColor("#ada8a8"));
-                    spotlightConfig.setHeadingTvSize(32);
-                    spotlightConfig.setSubHeadingTvColor(Color.parseColor("#ffffff"));
-                    spotlightConfig.setSubHeadingTvSize(16);
-                    spotlightConfig.setMaskColor(Color.parseColor("#dc000000"));
-                    spotlightConfig.setLineAnimationDuration(400);
-                    spotlightConfig.setLineAndArcColor(Color.parseColor("#807989"));
-                    spotlightConfig.setDismissOnTouch(true);
-                    spotlightConfig.setDismissOnBackpress(true);
-                    spotlightConfig.setShowTargetArc(true);
-                    spotlightConfig.setRevealAnimationEnabled(true);
-                    //Set up & Start SpotlightSequence
-                    SpotlightSequence.getInstance(MainActivity.this, spotlightConfig)
-                            .addSpotlight(btn_center, "Back to Center", "Press this button if you wish\nto go back the center", "centerbtn_id")
-                            .addSpotlight(btn_top, "Recommended Places", "Press this button if you wish\nto view only the recommended places.", "topbtn_id")
-                            .startSequence();
                 });
 
-            });
-
-            // Customize map with markers, polylines, etc.
-            // Create an Icon object for the marker to use
-            IconFactory iconFactory = IconFactory.getInstance(MainActivity.this);
-            Icon darkIcon = iconFactory.fromResource(R.mipmap.green_pin_marker_dark);
-            Icon normalIcon = iconFactory.fromResource(R.mipmap.green_pin_marker);
-            Icon lightIcon = iconFactory.fromResource(R.mipmap.green_pin_marker_light);
-            Icon neutralIcon = iconFactory.fromResource(R.mipmap.neutral_marker);
-
-            // On click listener for Center Button
-            btn_center.setOnClickListener(view -> {
-                LatLng center = new LatLng(7.0910885, 125.6112563);
-                mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
-
-            });
-
-            // On click listener for Recommended Places Button
-            btn_top.setOnClickListener(view -> {
-                if (!topTenPressed) {
-//                                Toast.makeText(MainActivity.this, "Show Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
-                    Timber.tag(TAG).d("On Top Button Click: %s", topTenPressed);
-                    topTenPressed = true;
-                    for (int x1 = 0; markerList.size() > x1; x1++) {
-                        mapboxMap.removeMarker(markerList.get(x1));
-                    }
-                    //adding top markers from firebase
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                    Query query = reference.child("data").orderByChild("location");
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    Data data = ds.getValue(Data.class);
-                                    assert data != null;
-                                    String loc = data.getLocation();
-                                    Coordinates coordinates = data.getCoordinates();
-                                    double lat = coordinates.getLatitude();
-                                    double lng = coordinates.getLongtitude();
-                                    LatLng newLatLng = new LatLng(lat, lng);
-                                    markerOptions.position(newLatLng);
-                                    SentimentInfo sentimentInfo = data.getSentimentInfo();
-                                    int reviewCount = sentimentInfo.getReviewcount();
-                                    int positive = sentimentInfo.getPositive();
-                                    double subjectivity = sentimentInfo.getSubjectivityscoreaverage();
-                                    LocationInfo locationInfo = data.getLocationInfo();
-                                    markerOptions.title(loc);
-                                    markerOptionsList.add(markerOptions);
-                                    if (reviewCount > 100
-                                            && Double.parseDouble(locationInfo.getRating()) >= 4.0
-                                            && subjectivity < .50
-                                            && positive > 100) {
-                                        mapboxMap.addMarker(markerOptions);
-                                    }
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Timber.e(String.valueOf(databaseError));
-                        }
-                    });
-                } else {
-                    for (int x1 = 0; markerList.size() > x1; x1++) {
-                        mapboxMap.removeMarker(markerList.get(x1));
-                    }
-                    markerList.clear();
-//                                Toast.makeText(MainActivity.this, "Hide Top Ten: "+ topTenPressed, Toast.LENGTH_SHORT).show();
-                    topTenPressed = false;
-                    //adding markers from firebase
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                    Query query = reference.child("data").orderByChild("location");
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    Data data = ds.getValue(Data.class);
-                                    assert data != null;
-                                    String loc = data.getLocation();
-                                    Coordinates coordinates = data.getCoordinates();
-                                    double lat = coordinates.getLatitude();
-                                    double lng = coordinates.getLongtitude();
-                                    LatLng newLatLng = new LatLng(lat, lng);
-                                    markerOptions.position(newLatLng);
-                                    SentimentInfo sentimentInfo = data.getSentimentInfo();
-                                    int reviewCount = sentimentInfo.getReviewcount();
-                                    int positive = sentimentInfo.getPositive();
-                                    int negative = sentimentInfo.getNegative();
-                                    int neutral = sentimentInfo.getNeutral();
-                                    double perc = Math.round((((double) positive) / reviewCount) * 100);
-                                    if (neutral > positive || (neutral == positive && positive == negative)) {
-                                        markerOptions.icon(neutralIcon);
-                                    } else if (positive > negative) {
-                                        markerOptions.icon(darkIcon);
-                                        if (perc >= 90) {
-                                            markerOptions.icon(darkIcon);
-                                        } else if (perc >= 70 && perc <= 80) {
-                                            markerOptions.icon(normalIcon);
-                                        } else if (perc > 50 && perc < 71) {
-                                            markerOptions.icon(lightIcon);
-                                        } else {
-                                            Timber.d("perc below 50");
-                                        }
-                                    } else {
-                                        Timber.d("negative greater than positive");
-                                    }
-                                    markerOptions.title(loc);
-                                    markerOptionsList.add(markerOptions);
-                                    newMarker = mapboxMap.addMarker(markerOptions);
-                                    pieChart.invalidate();
-                                    markerList.add(newMarker);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Timber.e(String.valueOf(databaseError));
-                        }
-                    });
-                }
-            });
-
-            //Adding Markers from Firebase
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-            Query query = reference.child("data").orderByChild("location");
-            //Query data from Firebase by initializing query to reference child to 'data' and ordered by child 'location' then query.addValueEventListener
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        //For each dataSnapshot, initialized to Data POJO
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            Data data = ds.getValue(Data.class);
-                            assert data != null;
-                            String loc = data.getLocation();
-                            //POJOs Coordinates  and SentimentInfo is set to their Getter function in Data POJO
-                            //MarkerOptions are set using the POJOs of Coordinates  and SentimentInfo
-                            Coordinates coordinates = data.getCoordinates();
-                            double lat = coordinates.getLatitude();
-                            double lng = coordinates.getLongtitude();
-                            LatLng newLatLng = new LatLng(lat, lng);
-                            markerOptions.position(newLatLng);
-                            SentimentInfo sentimentInfo = data.getSentimentInfo();
-                            int reviewCount = sentimentInfo.getReviewcount();
-                            int positive = sentimentInfo.getPositive();
-                            int negative = sentimentInfo.getNegative();
-                            int neutral = sentimentInfo.getNeutral();
-                            double perc = Math.round((((double) positive) / reviewCount) * 100);
-                            if (neutral > positive || (neutral == positive && positive == negative)) {
-                                markerOptions.icon(neutralIcon);
-                            } else if (positive > negative) {
-                                markerOptions.icon(darkIcon);
-                                if (perc >= 90) {
-                                    markerOptions.icon(darkIcon);
-                                } else if (perc >= 70 && perc <= 80) {
-                                    markerOptions.icon(normalIcon);
-                                } else if (perc > 50 && perc < 71) {
-                                    markerOptions.icon(lightIcon);
-                                } else {
-                                    Timber.d("perc below 50");
-                                }
-                            } else {
-                                Timber.d("negative greater than positive");
-                            }
-                            markerOptions.title(loc);
-                            markerOptionsList.add(markerOptions);
-                            //MapboxMap Add Marker function called with markeroptions as parameter
-                            newMarker = mapboxMap.addMarker(markerOptions);
-                            markerList.add(newMarker);
-
-                        }
-                    }
-                    //Animate camera to center
-                    LatLng center = new LatLng(7.0910885, 125.6112563);
-                    mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Timber.e(String.valueOf(databaseError));
-                }
-            });
-
-            //Setting values to piechart on Marker Click from Firebase
-            mapboxMap.setOnMarkerClickListener(marker -> {
-                pieChart.animateXY(1000, 1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
-                mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
-                List<PieEntry> entries = new ArrayList<>();
-                entries.clear();
-                //get data from firebase
-                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
-                Query query1 = reference1.child("data").orderByChild("location");
-                query1.addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("SetTextI18n")
+                //Adding Markers from Firebase
+                DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+                Query query2 = reference2.child("data").orderByChild("location");
+                //Query data from Firebase by initializing query to reference child to 'data' and ordered by child 'location' then query.addValueEventListener
+                query2.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Timber.tag(TAG).d("onDataChange: inside data");
                         if (dataSnapshot.exists()) {
+                            Timber.tag(TAG).d("onDataChange: datasnapshot exists");
+                            //For each dataSnapshot, initialized to Data POJO
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 Data data = ds.getValue(Data.class);
                                 assert data != null;
-                                String location = data.getLocation();
+                                String loc = data.getLocation();
+                                //POJOs Coordinates  and SentimentInfo is set to their Getter function in Data POJO
+                                //MarkerOptions are set using the POJOs of Coordinates  and SentimentInfo
+                                Coordinates coordinates = data.getCoordinates();
+                                double lat = coordinates.getLatitude();
+                                double lng = coordinates.getLongtitude();
+                                LatLng newLatLng = new LatLng(lat, lng);
+                                markerOptions.position(newLatLng);
                                 SentimentInfo sentimentInfo = data.getSentimentInfo();
-                                double subjectivityScore = sentimentInfo.getSubjectivityscoreaverage();
+                                int reviewCount = sentimentInfo.getReviewcount();
                                 int positive = sentimentInfo.getPositive();
                                 int negative = sentimentInfo.getNegative();
                                 int neutral = sentimentInfo.getNeutral();
-
-                                //Add PieEntry Positive, Negative, and Neutral to Entries
-                                //if Data.getLocation is Equal to Marker Location
-                                if (location.equals(marker.getTitle())) {
-                                    entries.add(new PieEntry(positive, "Positive"));
-                                    entries.add(new PieEntry(neutral, "Neutral"));
-                                    entries.add(new PieEntry(negative, "Negative"));
-                                    int subjectivityScoreBar = (int) Math.round(subjectivityScore * 100);
-                                    pieChart.setCenterText("Percentage of Reviews");
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                double perc = Math.round((((double) positive) / reviewCount) * 100);
+                                if (neutral > positive || (neutral == positive && positive == negative)) {
+                                    markerOptions.icon(neutralIcon);
+                                } else if (positive > negative) {
+                                    markerOptions.icon(darkIcon);
+                                    if (perc >= 90) {
+                                        markerOptions.icon(darkIcon);
+                                    } else if (perc >= 70 && perc <= 80) {
+                                        markerOptions.icon(normalIcon);
+                                    } else if (perc > 50 && perc < 71) {
+                                        markerOptions.icon(lightIcon);
+                                    } else {
+                                        Timber.d("perc below 50");
                                     }
-                                    tvSubjectivity.setText("Subjectivity: " + subjectivityScoreBar + "%");
+                                } else {
+                                    Timber.d("negative greater than positive");
                                 }
-                                PieDataSet pieDataSet = new PieDataSet(entries, "Reviews");
-                                PieData pieData = new PieData(pieDataSet);
-                                Highlight h = new Highlight(0, 0, 0); // dataset index for piechart is always 0
-                                //Set pieDataSet, pieData, highlight and Additional Piechart Settings
-                                new Handler().post(() -> {
+                                markerOptions.title(loc);
+                                markerOptionsList.add(markerOptions);
+                                //MapboxMap Add Marker function called with markeroptions as parameter
+                                newMarker = mapboxMap.addMarker(markerOptions);
+                                pieChart.invalidate();
+                                markerList.add(newMarker);
+
+                            }
+                        }
+                        //Animate camera to center
+                        LatLng center = new LatLng(7.0910885, 125.6112563);
+                        mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(center), 1000);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.e("adding firebase markers error: " + String.valueOf(databaseError));
+                    }
+                });
+
+                ConnectivityManager cm = (ConnectivityManager) MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = null;
+//                if (cm != null) {
+//                    activeNetwork = cm.getActiveNetworkInfo();
+//                }
+//                boolean isConnectedtoNet = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+//                boolean isWiFi = false;
+//                if (activeNetwork != null) {
+//                    isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+//                }
+//                if (isConnectedtoNet || isWiFi) {
+                    Timber.tag(TAG).d("onMapReady: Connected to the Internet");
+                    // Set up the offlineManager
+                    offlineManager = OfflineManager.getInstance(MainActivity.this);
+                    // OfflineManager
+                    new Handler().post(() -> {
+                        // Create offline definition using the current
+                        // style and boundaries of visible map area
+                        String styleUrl = mapboxMap.getStyleUrl();
+
+                        // Create a bounding box for the offline region
+                        double minZoom = mapboxMap.getCameraPosition().zoom;
+                        double maxZoom = mapboxMap.getMaxZoomLevel();
+                        float pixelRatio = MainActivity.this.getResources().getDisplayMetrics().density;
+                        OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
+                                styleUrl, latLngBounds, minZoom, maxZoom, pixelRatio);
+
+                        // Build a JSONObject using the user-defined offline region title,
+                        // convert it into string, and use it to create a metadata variable.
+                        // The metadata variable will later be passed to createOfflineRegion()
+                        byte[] metadata;
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put(JSON_FIELD_REGION_NAME, "Davao");
+                            String json = jsonObject.toString();
+                            metadata = json.getBytes(JSON_CHARSET);
+                        } catch (Exception exception) {
+                            Timber.tag(TAG).e("Failed to encode metadata: %s", exception.getMessage());
+                            metadata = null;
+                        }
+
+                        // Create the offline region and launch the download
+                        assert metadata != null;
+                        offlineManager.createOfflineRegion(definition, metadata, new OfflineManager.CreateOfflineRegionCallback() {
+                            @Override
+                            public void onCreate(OfflineRegion offlineRegion) {
+                                Timber.tag(TAG).d("Offline region created: Davao");
+                                MainActivity.this.offlineRegion = offlineRegion;
+                                offlineRegion.setDownloadState(OfflineRegion.STATE_ACTIVE);
+                                // Display the download progress bar
+                                progressBar = findViewById(R.id.progressBar);
+                                startProgress();
+
+                                // Monitor the download progress using setObserver
+                                offlineRegion.setObserver(new OfflineRegion.OfflineRegionObserver() {
+                                    @Override
+                                    public void onStatusChanged(OfflineRegionStatus status) {
+                                        // Calculate the download percentage and update the progress bar
+                                        double percentage = status.getRequiredResourceCount() >= 0
+                                                ? (100.0 * status.getCompletedResourceCount() / status.getRequiredResourceCount()) :
+                                                0.0;
+                                        if (status.isComplete()) {
+                                            // End Progress on Download complete
+                                            endProgress();
+                                        } else if (status.isRequiredResourceCountPrecise()) {
+                                            // Switch to determinate state
+                                            setPercentage((int) Math.round(percentage));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(OfflineRegionError error) {
+                                        // If an error occurs, print to logcat
+                                        Timber.tag(TAG).e("onError reason: %s", error.getReason());
+                                        Timber.tag(TAG).e("onError message: %s", error.getMessage());
+                                    }
+
+                                    @Override
+                                    public void mapboxTileCountLimitExceeded(long limit) {
+                                        // Notify if offline region exceeds maximum tile count
+                                        Timber.tag(TAG).e("Mapbox tile count limit exceeded: %s", limit);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Timber.tag(TAG).e("Error: %s", error);
+                            }
+                        });
+                    });
+//                } else {
+//                    Timber.tag(TAG).e("onMapReady: Not to the Internet");
+//                }
+
+
+                //Setting values to piechart on Marker Click from Firebase
+                mapboxMap.setOnMarkerClickListener(marker -> {
+                    pieChart.animateXY(1000, 1000, Easing.EasingOption.EaseOutCirc, Easing.EasingOption.EaseOutCirc);
+                    mapboxMap.easeCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 1000);
+                    List<PieEntry> entries = new ArrayList<>();
+                    entries.clear();
+                    //get data from firebase
+                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
+                    Query query1 = reference1.child("data").orderByChild("location");
+                    query1.addValueEventListener(new ValueEventListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    Data data = ds.getValue(Data.class);
+                                    assert data != null;
+                                    String location = data.getLocation();
+                                    SentimentInfo sentimentInfo = data.getSentimentInfo();
+                                    double subjectivityScore = sentimentInfo.getSubjectivityscoreaverage();
+                                    int positive = sentimentInfo.getPositive();
+                                    int negative = sentimentInfo.getNegative();
+                                    int neutral = sentimentInfo.getNeutral();
+
+                                    //Add PieEntry Positive, Negative, and Neutral to Entries
+                                    //if Data.getLocation is Equal to Marker Location
+                                    if (location.equals(marker.getTitle())) {
+                                        entries.add(new PieEntry(positive, "Positive"));
+                                        entries.add(new PieEntry(neutral, "Neutral"));
+                                        entries.add(new PieEntry(negative, "Negative"));
+                                        int subjectivityScoreBar = (int) Math.round(subjectivityScore * 100);
+                                        pieChart.setCenterText("Percentage of Reviews");
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                            subjectivityBar.setProgress(subjectivityScoreBar, true);
+                                        }
+                                        tvSubjectivity.setText("Subjectivity: " + subjectivityScoreBar + "%");
+                                    }
+                                    PieDataSet pieDataSet = new PieDataSet(entries, "Reviews");
+                                    PieData pieData = new PieData(pieDataSet);
+                                    Highlight h = new Highlight(0, 0, 0); // dataset index for piechart is always 0
+                                    //Set pieDataSet, pieData, highlight and Additional Piechart Settings
                                     pieData.setValueTextColor(Color.LTGRAY);
                                     pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
                                     pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
@@ -490,21 +531,21 @@ public class MainActivity extends AppCompatActivity {
                                     pieChart.getLegend().setTextColor(Color.LTGRAY);
                                     pieChart.setData(pieData);
                                     pieChart.invalidate();
-                                });
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Timber.e(String.valueOf(databaseError));
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Timber.e(String.valueOf(databaseError));
+                        }
+                    });
+                    //To avoid infowindow not showing up
+                    //return false
+                    return false;
                 });
-                //To avoid infowindow not showing up
-                //return false
-                return false;
-            });
 
+            }
         });
 
     }
